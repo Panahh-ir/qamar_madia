@@ -385,7 +385,16 @@
       <form id="productForm">
         <input type="hidden" id="productEditId">
         <div class="form-group"><label>نام محصول</label><input type="text" id="productName" required></div>
-        <div class="form-group"><label>دسته‌بندی</label><select id="productCategory"><option value="poster">پوستر</option><option value="typography">تایپوگرافی</option><option value="profile">پروفایل</option></select></div>
+        <div class="form-group">
+          <label>دسته‌بندی</label>
+          <select id="productCategory">
+            <option value="poster">پوستر</option>
+            <option value="typography">تایپوگرافی</option>
+            <option value="profile">پروفایل</option>
+            <option value="logo">لوگو</option>
+            <option value="other">سایر</option>
+          </select>
+        </div>
         <div class="form-group"><label>قیمت (تومان)</label><input type="number" id="productPrice"></div>
         <div class="form-group"><label>توضیحات</label><textarea id="productDesc"></textarea></div>
         <div class="form-group"><label>لینک تصویر هدر</label><input type="url" id="productImage" placeholder="https://..."></div>
@@ -556,7 +565,7 @@
       const btnContainer = document.getElementById('userActionButtons');
       btnContainer.innerHTML = '';
 
-      if (role === 'owner') {
+      if (role === 'creator' || role === 'owner') {
         btnContainer.innerHTML = `<button class="btn btn-sm btn-primary" onclick="openUserModal()"><i class="fa-solid fa-plus"></i> افزودن کاربر</button>`;
       }
     }
@@ -589,12 +598,14 @@
         const tbody = document.getElementById('productsTable');
         const empty = document.getElementById('productsEmpty');
 
+        const categoryLabels = { poster: 'پوستر', typography: 'تایپوگرافی', profile: 'پروفایل', logo: 'لوگو', other: 'سایر' };
+
         if (data.result === 'success' && data.data.products.length > 0) {
           empty.style.display = 'none';
           tbody.innerHTML = data.data.products.map(p => `
             <tr>
               <td><strong>${p.name}</strong></td>
-              <td>${p.description || '-'}</td>
+              <td>${categoryLabels[p.description] || p.description || '-'}</td>
               <td>${p.price ? Number(p.price).toLocaleString('fa-IR') : '-'}</td>
               <td>${p.added_by || '-'}</td>
               <td>${p.date_added || '-'}</td>
@@ -619,7 +630,6 @@
       const role = currentUser.role;
       if (role === 'owner' || role === 'super_admin') return true;
       if (role === 'admin') {
-        // Check if this admin added the product
         const addedBy = product.added_by || '';
         return addedBy.includes(currentUser.username);
       }
@@ -636,7 +646,6 @@
       if (editId) {
         document.getElementById('productModalTitle').textContent = 'ویرایش محصول';
         document.getElementById('productEditId').value = editId;
-        // Pre-fill would need fetching single product - simplified for now
       } else {
         document.getElementById('productModalTitle').textContent = 'افزودن محصول جدید';
       }
@@ -661,7 +670,7 @@
       const productData = {
         action: editId ? 'editProduct' : 'addProduct',
         name: document.getElementById('productName').value,
-        description: document.getElementById('productDesc').value,
+        description: document.getElementById('productCategory').value,
         category: document.getElementById('productCategory').value,
         price: document.getElementById('productPrice').value,
         header_image: document.getElementById('productImage').value,
@@ -830,14 +839,23 @@
       const role = currentUser.role;
       let actions = '';
 
+      // Creator can set owner, add/remove admins
       if (role === 'creator' && user.role !== 'creator') {
-        actions += `<button class="btn btn-sm btn-success" onclick="setOwner('${user.username}')"><i class="fa-solid fa-crown"></i> انتخاب به عنوان مالک</button>`;
+        if (user.role !== 'owner') {
+          actions += `<button class="btn btn-sm btn-success" onclick="setOwner('${user.username}')"><i class="fa-solid fa-crown"></i> انتخاب مالک</button>`;
+        }
+        actions += `<button class="btn btn-sm btn-danger" onclick="removeUser('${user.username}')"><i class="fa-solid fa-user-slash"></i> عزل</button>`;
       }
 
-      if (role === 'owner' && user.role !== 'creator') {
-        actions += `<button class="btn btn-sm btn-outline" onclick="changeRole('${user.username}','super_admin')"><i class="fa-solid fa-arrow-up"></i> ارتقا به ویژه</button>`;
-        actions += `<button class="btn btn-sm btn-outline" onclick="changeRole('${user.username}','admin')"><i class="fa-solid fa-arrow-down"></i> تنزل به ادمین</button>`;
-        actions += `<button class="btn btn-sm btn-danger" onclick="removeUser('${user.username}')"><i class="fa-solid fa-user-slash"></i> عزل</button>`;
+      // Owner can manage admins and super_admins (not himself)
+      if (role === 'owner' && user.username !== currentUser.username && user.role !== 'creator') {
+        if (user.role === 'admin') {
+          actions += `<button class="btn btn-sm btn-outline" onclick="changeRole('${user.username}','super_admin')"><i class="fa-solid fa-arrow-up"></i> ارتقا به ویژه</button>`;
+          actions += `<button class="btn btn-sm btn-danger" onclick="removeUser('${user.username}')"><i class="fa-solid fa-user-slash"></i> عزل</button>`;
+        } else if (user.role === 'super_admin') {
+          actions += `<button class="btn btn-sm btn-outline" onclick="changeRole('${user.username}','admin')"><i class="fa-solid fa-arrow-down"></i> تنزل به ادمین</button>`;
+          actions += `<button class="btn btn-sm btn-danger" onclick="removeUser('${user.username}')"><i class="fa-solid fa-user-slash"></i> عزل</button>`;
+        }
       }
 
       return actions || '<span class="badge badge-info">—</span>';
@@ -849,6 +867,9 @@
       document.getElementById('userForm').reset();
       document.getElementById('userError').style.display = 'none';
       document.getElementById('userSuccess').style.display = 'none';
+      // Set role options based on who is adding
+      const roleSelect = document.getElementById('newRole');
+      roleSelect.innerHTML = '<option value="admin">ادمین</option><option value="super_admin">ادمین ویژه</option>';
     }
 
     function closeUserModal() {
@@ -924,7 +945,7 @@
     }
 
     async function setOwner(username) {
-      if (!confirm('آیا از انتخاب این کاربر به عنوان مالک مطمئن هستید؟')) return;
+      if (!confirm('آیا از انتخاب این کاربر به عنوان مالک مطمئن هستید؟ کاربر قبلی از مقام مالکیت عزل می‌شود.')) return;
       try {
         const res = await fetch(API_URL, {
           method: 'POST',
@@ -939,7 +960,8 @@
           alert(data.message);
         }
       } catch(e) { alert('خطا'); }
-            }
+    }
+
     // ==================== MODAL CLICK OUTSIDE ====================
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', function(e) {
@@ -949,4 +971,3 @@
   </script>
 </body>
 </html>
-    
