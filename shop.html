@@ -17,6 +17,7 @@
       --dark: #3e2c1c;
       --text: #5c4a3a;
       --white: #ffffff;
+      --red: #e74c3c;
     }
 
     body {
@@ -145,7 +146,7 @@
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       font-size: 12px;
       color: #a08b73;
     }
@@ -158,12 +159,20 @@
 
     .product-meta-info i { color: var(--brown); }
 
+    /* ========== BUTTONS ROW ========== */
+    .buttons-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     .btn-buy {
+      flex: 2;
+      min-width: 200px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      width: 100%;
       padding: 16px;
       background: linear-gradient(145deg, #27ae60, #219a52);
       color: var(--white);
@@ -183,7 +192,50 @@
       box-shadow: 0 8px 24px rgba(39,174,96,0.35);
     }
 
-    .btn-buy i { font-size: 20px; }
+    .btn-like {
+      flex: 1;
+      min-width: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 16px;
+      background: var(--white);
+      color: var(--red);
+      border: 2px solid #f5d6d3;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .btn-like:hover {
+      background: #fdf0ee;
+      border-color: var(--red);
+    }
+
+    .btn-like.liked {
+      background: var(--red);
+      color: var(--white);
+      border-color: var(--red);
+    }
+
+    .btn-like.liked i {
+      animation: heartBeat 0.4s ease;
+    }
+
+    .btn-like:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
 
     /* ========== EMPTY / ERROR ========== */
     .empty-state {
@@ -217,6 +269,8 @@
       .product-title { font-size: 20px; }
       .product-price-large { font-size: 22px; }
       .product-details { padding: 16px; }
+      .buttons-row { flex-direction: column; }
+      .btn-like { min-width: unset; }
     }
   </style>
 </head>
@@ -294,11 +348,11 @@
             return;
           }
 
-          // Increment view
-          fetch(API_URL, {
-            method: 'POST',
-            body: JSON.stringify({ action: 'incrementViews', product_id: productId })
-          }).catch(() => {});
+          // Handle view count
+          handleViewCount(productId);
+
+          // Handle like button state
+          const hasLiked = localStorage.getItem('qm_liked_' + productId) === 'true';
 
           container.innerHTML = `
             <img src="${product.header_image || 'https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'}" 
@@ -322,15 +376,21 @@
               </div>
               
               <div class="product-meta-info">
-                <span><i class="fa-solid fa-eye"></i> ${product.views || 0} بازدید</span>
-                <span><i class="fa-solid fa-heart"></i> ${product.likes || 0} لایک</span>
+                <span id="viewsCount"><i class="fa-solid fa-eye"></i> ${product.views || 0} بازدید</span>
+                <span id="likesCount"><i class="fa-solid fa-heart"></i> ${product.likes || 0} لایک</span>
                 <span><i class="fa-solid fa-calendar"></i> ${product.date_added || '-'}</span>
               </div>
               
-              <button class="btn-buy" onclick="buyProduct('${product.product_id}', '${product.name}')">
-                <i class="fa-solid fa-cart-shopping"></i>
-                خرید این محصول
-              </button>
+              <div class="buttons-row">
+                <button class="btn-buy" onclick="buyProduct('${product.product_id}', '${product.name}')">
+                  <i class="fa-solid fa-cart-shopping"></i>
+                  خرید این محصول
+                </button>
+                <button class="btn-like ${hasLiked ? 'liked' : ''}" id="likeButton" onclick="toggleLike('${product.product_id}')" ${hasLiked ? '' : ''}>
+                  <i class="fa-solid fa-heart"></i>
+                  <span id="likeText">${hasLiked ? 'پسندیده شد' : 'می‌پسندم'}</span>
+                </button>
+              </div>
             </div>
           `;
         }
@@ -348,8 +408,76 @@
       }
     }
 
+    function handleViewCount(productId) {
+      const viewedKey = 'qm_viewed_' + productId;
+      
+      if (localStorage.getItem(viewedKey) === 'true') {
+        // Already viewed, don't increment
+        return;
+      }
+
+      // Mark as viewed
+      localStorage.setItem(viewedKey, 'true');
+
+      // Increment view in sheet
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'incrementViews', product_id: productId })
+      })
+      .then(r => r.json())
+      .then(d => {
+        if (d.result === 'success') {
+          const viewsEl = document.getElementById('viewsCount');
+          if (viewsEl) {
+            viewsEl.innerHTML = `<i class="fa-solid fa-eye"></i> ${d.data.views} بازدید`;
+          }
+        }
+      })
+      .catch(() => {});
+    }
+
+    async function toggleLike(productId) {
+      const likeKey = 'qm_liked_' + productId;
+      const hasLiked = localStorage.getItem(likeKey) === 'true';
+      const btn = document.getElementById('likeButton');
+      const likeText = document.getElementById('likeText');
+
+      if (hasLiked) {
+        // Unlike
+        localStorage.removeItem(likeKey);
+        btn.classList.remove('liked');
+        likeText.textContent = 'می‌پسندم';
+
+        try {
+          const res = await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: 'remove' })
+          });
+          const d = await res.json();
+          if (d.result === 'success') {
+            document.getElementById('likesCount').innerHTML = `<i class="fa-solid fa-heart"></i> ${d.data.likes} لایک`;
+          }
+        } catch(e) {}
+      } else {
+        // Like
+        localStorage.setItem(likeKey, 'true');
+        btn.classList.add('liked');
+        likeText.textContent = 'پسندیده شد';
+
+        try {
+          const res = await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: 'add' })
+          });
+          const d = await res.json();
+          if (d.result === 'success') {
+            document.getElementById('likesCount').innerHTML = `<i class="fa-solid fa-heart"></i> ${d.data.likes} لایک`;
+          }
+        } catch(e) {}
+      }
+    }
+
     function buyProduct(productId, productName) {
-      // For now - alert. Later connect to payment gateway
       alert('درخواست خرید برای: ' + productName + '\nکد محصول: ' + productId + '\n\nبخش پرداخت به زودی اضافه می‌شود.');
     }
 
