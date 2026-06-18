@@ -605,7 +605,7 @@
           tbody.innerHTML = data.data.products.map(p => `
             <tr>
               <td><strong>${p.name}</strong></td>
-              <td>${categoryLabels[p.description] || p.description || '-'}</td>
+              <td>${categoryLabels[p.category] || p.category || '-'}</td>
               <td>${p.price ? Number(p.price).toLocaleString('fa-IR') : '-'}</td>
               <td>${p.added_by || '-'}</td>
               <td>${p.date_added || '-'}</td>
