@@ -742,7 +742,13 @@
               <td>${o.customer_name}</td>
               <td>${o.contact}</td>
               <td><span class="badge ${o.payment_status === 'paid' ? 'badge-success' : 'badge-danger'}">${o.payment_status === 'paid' ? 'پرداخت شده' : 'پرداخت نشده'}</span></td>
-              <td>${o.description || '-'}</td>
+              <td>
+                ${o.description ? `
+                  <button class="btn btn-xs btn-outline" onclick="showDescription('${(o.description || '').replace(/'/g, "\\'").replace(/\n/g, '\\n')}')">
+                  <i class="fa-solid fa-eye"></i> مشاهده
+                  </button>
+                  ` : '-'}
+              </td>
               <td>${o.date_submitted || '-'}</td>
               <td>${o.file_link ? '<a href="' + o.file_link + '" target="_blank"><i class="fa-solid fa-download"></i></a>' : '-'}</td>
               <td>${o.uploaded_by || '-'}</td>
@@ -960,6 +966,40 @@
           alert(data.message);
         }
       } catch(e) { alert('خطا'); }
+    }
+
+    function showDescription(desc) {
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); z-index: 9999;
+        display: flex; justify-content: center; align-items: center;
+        padding: 20px;
+      `;
+  
+      modal.innerHTML = `
+        <div style="
+          background: white; border-radius: 16px; padding: 24px;
+          max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        ">
+          <h3 style="margin-bottom: 16px; color: #3e2c1c;">
+            <i class="fa-solid fa-align-right"></i> توضیحات سفارش
+          </h3>
+          <p style="color: #5c4a3a; line-height: 1.8; font-size: 14px; white-space: pre-wrap;">${desc}</p>
+          <button onclick="this.closest('div').parentElement.remove()" 
+            style="margin-top: 16px; padding: 10px 24px; background: #8b6f4e; color: white;
+            border: none; border-radius: 8px; cursor: pointer; font-family: inherit;">
+            <i class="fa-solid fa-xmark"></i> بستن
+          </button>
+        </div>
+      `;
+  
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) modal.remove();
+  });
+  
+  document.body.appendChild(modal);
     }
 
     // ==================== MODAL CLICK OUTSIDE ====================
