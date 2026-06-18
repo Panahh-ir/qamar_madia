@@ -17,6 +17,8 @@
       --dark: #3e2c1c;
       --text: #5c4a3a;
       --white: #ffffff;
+      --red: #e74c3c;
+      --green: #27ae60;
     }
 
     body {
@@ -184,7 +186,7 @@
     .product-price {
       font-size: 13px;
       font-weight: 700;
-      color: #27ae60;
+      color: var(--green);
     }
 
     .product-price span {
@@ -192,6 +194,58 @@
       font-weight: 400;
       color: #a08b73;
       margin-right: 2px;
+    }
+
+    .product-like-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #f5efe6;
+    }
+
+    .product-likes-count {
+      font-size: 11px;
+      color: #a08b73;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .product-likes-count i {
+      color: var(--red);
+      font-size: 10px;
+    }
+
+    .btn-card-like {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      color: #ccc;
+      transition: all 0.3s ease;
+      padding: 4px;
+    }
+
+    .btn-card-like:hover {
+      color: var(--red);
+      transform: scale(1.2);
+    }
+
+    .btn-card-like.liked {
+      color: var(--red);
+    }
+
+    .btn-card-like.liked i {
+      font-weight: 900;
+      animation: heartBeat 0.4s ease;
+    }
+
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
     }
 
     /* ========== EMPTY ========== */
@@ -381,21 +435,30 @@
             return;
           }
 
-          grid.innerHTML = available.map(p => `
-            <div class="product-card" onclick="goToProduct('${p.product_id}')">
-              <img src="${p.header_image || 'https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'}" 
-                   alt="${p.name}" 
-                   class="product-image"
-                   onerror="this.src='https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'">
-              <div class="product-info">
-                <div class="product-name">${p.name}</div>
-                <div class="product-meta">
-                  <span class="product-category">${categoryLabels[p.category] || p.category || 'سایر'}</span>
-                  <span class="product-price">${Number(p.price).toLocaleString('fa-IR')} <span>تومان</span></span>
+          grid.innerHTML = available.map(p => {
+            const hasLiked = localStorage.getItem('qm_liked_' + p.product_id) === 'true';
+            return `
+              <div class="product-card" onclick="goToProduct('${p.product_id}')">
+                <img src="${p.header_image || 'https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'}" 
+                     alt="${p.name}" 
+                     class="product-image"
+                     onerror="this.src='https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'">
+                <div class="product-info">
+                  <div class="product-name">${p.name}</div>
+                  <div class="product-meta">
+                    <span class="product-category">${categoryLabels[p.category] || p.category || 'سایر'}</span>
+                    <span class="product-price">${Number(p.price).toLocaleString('fa-IR')} <span>تومان</span></span>
+                  </div>
+                  <div class="product-like-row">
+                    <span class="product-likes-count"><i class="fa-solid fa-heart"></i> ${p.likes || 0}</span>
+                    <button class="btn-card-like ${hasLiked ? 'liked' : ''}" onclick="event.stopPropagation(); toggleLikeCard('${p.product_id}', this)" title="می‌پسندم">
+                      <i class="${hasLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          `).join('');
+            `;
+          }).join('');
         } else {
           grid.innerHTML = `
             <div class="empty-state">
@@ -416,6 +479,47 @@
     function goToProduct(productId) {
       localStorage.setItem('qm_selected_product', productId);
       window.location.href = 'shop.html';
+    }
+
+    async function toggleLikeCard(productId, button) {
+      const likeKey = 'qm_liked_' + productId;
+      const hasLiked = localStorage.getItem(likeKey) === 'true';
+
+      if (hasLiked) {
+        localStorage.removeItem(likeKey);
+        button.classList.remove('liked');
+        button.innerHTML = '<i class="fa-regular fa-heart"></i>';
+        
+        try {
+          const res = await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: 'remove' })
+          });
+          const d = await res.json();
+          if (d.result === 'success') {
+            const likesEl = button.parentElement.querySelector('.product-likes-count');
+            if (likesEl) likesEl.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes;
+            loadFooterStats();
+          }
+        } catch(e) {}
+      } else {
+        localStorage.setItem(likeKey, 'true');
+        button.classList.add('liked');
+        button.innerHTML = '<i class="fa-solid fa-heart"></i>';
+        
+        try {
+          const res = await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: 'add' })
+          });
+          const d = await res.json();
+          if (d.result === 'success') {
+            const likesEl = button.parentElement.querySelector('.product-likes-count');
+            if (likesEl) likesEl.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes;
+            loadFooterStats();
+          }
+        } catch(e) {}
+      }
     }
 
     async function loadFooterStats() {
