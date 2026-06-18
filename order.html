@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>رسانه هنری قمر | ثبت سفارش</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #fdfbf7;
+      --milk: #f5efe6;
+      --beige: #ede4d8;
+      --gold: #c8af93;
+      --brown: #8b6f4e;
+      --dark: #3e2c1c;
+      --text: #5c4a3a;
+      --white: #ffffff;
+      --green: #27ae60;
+      --red: #c0392b;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--milk) 50%, var(--beige) 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      background: var(--white);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-back {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--brown);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .header-back i { font-size: 16px; }
+    .header-back:hover { color: var(--dark); }
+
+    .header-logo-small {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      justify-content: center;
+    }
+    .header-logo-small img {
+      width: 32px; height: 32px;
+      border-radius: 50%; object-fit: cover;
+    }
+    .header-logo-small span {
+      font-weight: 700; color: var(--dark); font-size: 16px;
+    }
+
+    /* ========== CONTAINER ========== */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+
+    .page-title {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #a08b73;
+      margin-bottom: 24px;
+    }
+
+    .separator {
+      width: 50px;
+      height: 2px;
+      background: var(--gold);
+      margin: 0 auto 20px;
+      border-radius: 1px;
+    }
+
+    /* ========== FORM CARD ========== */
+    .form-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-group label i {
+      color: var(--brown);
+      font-size: 12px;
+      width: 16px;
+      text-align: center;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #e5ddd3;
+      border-radius: 12px;
+      font-size: 14px;
+      color: var(--dark);
+      background: #fdfaf6;
+      outline: none;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(200,175,147,0.1);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #c4b6a6;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-group select {
+      appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b6f4e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: left 16px center;
+      padding-left: 40px;
+    }
+
+    .form-group select option {
+      color: var(--dark);
+      background: var(--white);
+    }
+
+    .required-star {
+      color: var(--red);
+      font-size: 12px;
+    }
+
+    /* ========== MESSAGES ========== */
+    .error-message {
+      display: none;
+      color: var(--red);
+      font-size: 12px;
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: #fdf0ee;
+      border-radius: 10px;
+      border: 1px solid #f5d6d3;
+      text-align: center;
+    }
+
+    .success-box {
+      display: none;
+      text-align: center;
+      padding: 32px 20px;
+    }
+
+    .success-box .success-icon {
+      width: 72px;
+      height: 72px;
+      background: #eafaf1;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 16px;
+    }
+
+    .success-box .success-icon i {
+      font-size: 32px;
+      color: var(--green);
+    }
+
+    .success-box h2 {
+      font-size: 20px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .success-box p {
+      font-size: 14px;
+      color: #a08b73;
+      margin-bottom: 20px;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(145deg, var(--brown), #6d553b);
+      color: var(--white);
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(145deg, #7d6343, #5e4932);
+      box-shadow: 0 4px 16px rgba(107,83,59,0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .btn-submit:disabled {
+      background: #c4b6a6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-back-menu {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      background: var(--white);
+      color: var(--brown);
+      border: 1.5px solid var(--gold);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back-menu:hover {
+      background: var(--milk);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 600px) {
+      .container { padding: 16px 12px; }
+      .form-card { padding: 20px 16px; }
+      .page-title { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="menu.html" class="header-back">
+      <i class="fa-solid fa-arrow-right"></i>
+      بازگشت
+    </a>
+    <div class="header-logo-small">
+      <img src="https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg" alt="لوگو">
+      <span>رسانه هنری قمر</span>
+    </div>
+    <div style="width:60px;"></div>
+  </header>
+
+  <!-- CONTAINER -->
+  <div class="container">
+    <h1 class="page-title">ثبت سفارش اختصاصی</h1>
+    <p class="page-subtitle">طرح مورد نظر خود را توضیح دهید، ما می‌سازیم</p>
+    <div class="separator"></div>
+
+    <!-- FORM -->
+    <div class="form-card" id="formCard">
+      <form id="orderForm">
+        <div class="form-group">
+          <label>
+            <i class="fa-solid fa-user"></i>
+            نام و نام خانوادگی
+            <span class="required-star">*</span>
+          </label>
+          <input type="text" id="customerName" placeholder="نام کامل خود را وارد کنید" required>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <i class="fa-solid fa-phone"></i>
+            راه ارتباطی
+            <span class="required-star">*</span>
+          </label>
+          <input type="text" id="customerContact" placeholder="شماره موبایل یا ایمیل" required>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <i class="fa-solid fa-palette"></i>
+            نوع کار
+            <span class="required-star">*</span>
+          </label>
+          <select id="workType" required>
+            <option value="">-- انتخاب کنید --</option>
+            <option value="poster">پوستر</option>
+            <option value="typography">تایپوگرافی</option>
+            <option value="profile">پروفایل</option>
+            <option value="logo">لوگو</option>
+            <option value="other">سایر</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <i class="fa-solid fa-pen-to-square"></i>
+            توضیحات طرح
+            <span class="required-star">*</span>
+          </label>
+          <textarea id="description" placeholder="لطفاً توضیح دهید چه طرحی مد نظر شماست...&#10;&#10;مثلاً: رنگ‌بندی، سبک، ابعاد، متن مورد نظر، و هر نکنه دیگه‌ای که به طراح کمک کنه." required></textarea>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <i class="fa-solid fa-paper-plane"></i>
+          ثبت سفارش
+        </button>
+      </form>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-box" id="successBox">
+      <div class="success-icon">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h2>سفارش شما ثبت شد!</h2>
+      <p>به زودی با شما تماس می‌گیریم.</p>
+      <a href="menu.html" class="btn-back-menu">
+        <i class="fa-solid fa-arrow-right"></i>
+        بازگشت به منوی محصولات
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzPc09WqLHljWVha4stGqdXqayzbz96M0C6FaRPSYyTzr47a7BKI6lV60BkmZx6r6wJ2g/exec';
+
+    document.getElementById('orderForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const errorDiv = document.getElementById('errorMessage');
+      const submitBtn = document.getElementById('submitBtn');
+
+      // Validate
+      const name = document.getElementById('customerName').value.trim();
+      const contact = document.getElementById('customerContact').value.trim();
+      const workType = document.getElementById('workType').value;
+      const description = document.getElementById('description').value.trim();
+
+      if (!name || !contact || !workType || !description) {
+        errorDiv.textContent = 'لطفاً تمام فیلدهای الزامی را پر کنید.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      errorDiv.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ثبت سفارش...';
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'addOrder',
+            customer_name: name,
+            contact: contact,
+            work_type: workType,
+            description: description
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.result === 'success') {
+          // Show success
+          document.getElementById('formCard').style.display = 'none';
+          document.getElementById('successBox').style.display = 'block';
+        } else {
+          errorDiv.textContent = data.message || 'خطا در ثبت سفارش. لطفاً دوباره تلاش کنید.';
+          errorDiv.style.display = 'block';
+        }
+      } catch(e) {
+        errorDiv.textContent = 'خطا در ارتباط با سرور. لطفاً اتصال اینترنت را بررسی کنید.';
+        errorDiv.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ثبت سفارش';
+      }
+    });
+  </script>
+</body>
+</html>
