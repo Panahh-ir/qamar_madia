@@ -9,7 +9,8 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --cream: #fdfbf7; --milk: #f5efe6; --gold: #c8af93;
-      --brown: #8b6f4e; --dark: #3e2c1c; --text: #5c4a3a; --white: #fff; --purple: #8e44ad;
+      --brown: #8b6f4e; --dark: #3e2c1c; --text: #5c4a3a;
+      --white: #fff; --purple: #8e44ad; --green: #27ae60;
     }
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
@@ -19,84 +20,223 @@
     .header {
       background: var(--white); padding: 14px 20px; display: flex;
       align-items: center; box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      justify-content: space-between;
     }
     .header-back { color: var(--brown); font-size: 14px; font-weight: 600; text-decoration: none; }
-    .container { max-width: 600px; margin: 0 auto; padding: 24px 20px; }
-    .card { background: var(--white); border-radius: 20px; padding: 28px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
-    h2 { color: var(--dark); text-align: center; margin-bottom: 8px; }
-    .subtitle { color: #a08b73; font-size: 13px; text-align: center; margin-bottom: 20px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-    .form-group textarea {
-      width: 100%; padding: 12px 16px; border: 1.5px solid #e5ddd3; border-radius: 12px;
-      font-size: 14px; background: #fdfaf6; outline: none; font-family: inherit;
-      resize: vertical; min-height: 100px;
+    .header-logo { font-weight: 700; color: var(--dark); font-size: 16px; }
+    .container { max-width: 700px; margin: 0 auto; padding: 24px 20px; }
+    .card { background: var(--white); border-radius: 20px; padding: 28px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 16px; }
+    h2 { color: var(--dark); margin-bottom: 4px; }
+    h2 i { color: var(--purple); }
+    .subtitle { color: #a08b73; font-size: 13px; margin-bottom: 20px; }
+
+    .form-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .form-group { margin-bottom: 16px; flex: 1; min-width: 200px; }
+    .form-group.full { flex: 1 1 100%; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .form-group label i { color: var(--purple); font-size: 11px; margin-left: 4px; }
+    .form-group select, .form-group input, .form-group textarea {
+      width: 100%; padding: 10px 14px; border: 1.5px solid #e5ddd3; border-radius: 10px;
+      font-size: 13px; background: #fdfaf6; outline: none; font-family: inherit;
     }
-    .form-group textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(200,175,147,0.1); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group select:focus, .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--purple); box-shadow: 0 0 0 3px rgba(142,68,173,0.1);
+    }
+    .form-group select { appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b6f4e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: left 14px center; padding-left: 36px;
+    }
+
+    .prompt-preview {
+      background: #f9f0ff; border: 2px dashed var(--purple);
+      border-radius: 12px; padding: 14px 18px; margin: 16px 0;
+      font-size: 13px; color: #5b2c6f; min-height: 50px; line-height: 1.6;
+    }
+    .prompt-preview small { color: #a08b73; font-size: 11px; }
+
     .btn {
       width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 14px;
       font-weight: 600; cursor: pointer; font-family: inherit; display: flex;
-      align-items: center; justify-content: center; gap: 8px;
-      background: linear-gradient(145deg, #8e44ad, #6c3483); color: #fff;
+      align-items: center; justify-content: center; gap: 8px; transition: all 0.3s;
     }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-purple { background: linear-gradient(145deg, #8e44ad, #6c3483); color: #fff; }
+    .btn-purple:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-outline { background: var(--white); border: 1.5px solid var(--purple); color: var(--purple); }
+    .btn-sm { width: auto; padding: 8px 16px; font-size: 12px; }
+
     .result { margin-top: 20px; }
     .result img { width: 100%; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-    .tips { margin-top: 16px; font-size: 12px; color: #a08b73; }
-    .tips span { color: var(--purple); font-weight: 600; }
+    .result .download-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 12px; padding: 10px 20px; background: var(--green);
+      color: #fff; border-radius: 8px; text-decoration: none; font-size: 13px;
+    }
+
+    .tips { margin-top: 12px; font-size: 11px; color: #a08b73; text-align: center; }
+    .tips i { color: var(--purple); }
+
+    @media (max-width: 500px) {
+      .container { padding: 12px 8px; }
+      .card { padding: 20px 16px; }
+      .form-row { flex-direction: column; gap: 0; }
+    }
   </style>
 </head>
 <body>
   <header class="header">
     <a href="menu.html" class="header-back"><i class="fa-solid fa-arrow-right"></i> بازگشت</a>
+    <span class="header-logo">رسانه هنری قمر</span>
+    <div style="width:60px;"></div>
   </header>
+
   <div class="container">
+
+    <!-- PROMPT BUILDER -->
     <div class="card">
-      <h2><i class="fa-solid fa-robot"></i> طراحی با هوش مصنوعی</h2>
-      <p class="subtitle">طرح مورد نظرت رو توضیح بده، هوش مصنوعی برات می‌سازه</p>
-      <form onsubmit="generateImage(event)">
+      <h2><i class="fa-solid fa-wand-magic-sparkles"></i> پرامپت‌ساز هوشمند</h2>
+      <p class="subtitle">گزینه‌ها رو انتخاب کن تا پرامپت انگلیسی دقیق ساخته بشه</p>
+
+      <div class="form-row">
         <div class="form-group">
-          <label>توضیح طرح</label>
-          <textarea id="prompt" placeholder="مثلاً: یه پوستر مذهبی با تم محرم، رنگ مشکی و قرمز، اسم یا حسین(ع)..." required></textarea>
+          <label><i class="fa-solid fa-palette"></i> نوع طرح</label>
+          <select id="type" onchange="updatePrompt()">
+            <option value="">انتخاب کنید...</option>
+            <option value="Islamic religious poster">پوستر مذهبی اسلامی</option>
+            <option value="Islamic calligraphy typography">تایپوگرافی اسلامی</option>
+            <option value="Islamic architecture scene">معماری اسلامی</option>
+            <option value="Eid or Ramadan poster">پوستر عید / رمضان</option>
+            <option value="Spiritual Islamic art">هنر اسلامی روحانی</option>
+            <option value="Mosque interior design">طراحی داخلی مسجد</option>
+            <option value="Islamic geometric pattern art">هنر هندسه اسلامی</option>
+          </select>
         </div>
-        <button type="submit" class="btn" id="genBtn">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> ساخت طرح
-        </button>
-      </form>
-      <div class="result" id="result"></div>
-      <div class="tips">
-        <span>نکته: پرامپت های انگلیسی نتیجه بهتری دارند</span>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-droplet"></i> رنگ‌بندی اصلی</label>
+          <select id="colors" onchange="updatePrompt()">
+            <option value="">انتخاب کنید...</option>
+            <option value="black and gold">مشکی و طلایی</option>
+            <option value="dark blue and gold">آبی تیره و طلایی</option>
+            <option value="black and red">مشکی و قرمز</option>
+            <option value="green and gold">سبز و طلایی</option>
+            <option value="white and gold">سفید و طلایی</option>
+            <option value="dark purple and silver">بنفش تیره و نقره‌ای</option>
+            <option value="warm golden tones">تن‌های طلایی گرم</option>
+          </select>
+        </div>
       </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label><i class="fa-solid fa-text-height"></i> متن یا کلمه خاص</label>
+          <input type="text" id="text" placeholder="مثلاً: Ya Hussein, Allah, بسم الله..." oninput="updatePrompt()">
+        </div>
+
+        <div class="form-group">
+          <label><i class="fa-solid fa-paintbrush"></i> سبک هنری</label>
+          <select id="style" onchange="updatePrompt()">
+            <option value="">انتخاب کنید...</option>
+            <option value="Persian miniature style">مینیاتور ایرانی</option>
+            <option value="Ottoman calligraphy style">خط عثمانی</option>
+            <option value="modern digital art">هنر دیجیتال مدرن</option>
+            <option value="traditional arabesque">اسلیمی سنتی</option>
+            <option value="watercolor painting">آبرنگ</option>
+            <option value="3D render">رندر سه‌بعدی</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group full">
+        <label><i class="fa-solid fa-plus-circle"></i> جزئیات اضافه (اختیاری)</label>
+        <input type="text" id="extra" placeholder="مثلاً: crescent moon, candles, dome, starry sky..." oninput="updatePrompt()">
+      </div>
+
+      <!-- PROMPT PREVIEW -->
+      <div class="prompt-preview" id="promptPreview">
+        <small>پرامپت شما اینجا نمایش داده می‌شود...</small>
+      </div>
+
+      <button class="btn btn-purple" onclick="generateImage()" id="genBtn">
+        <i class="fa-solid fa-robot"></i> ساخت تصویر با پرامپت
+      </button>
     </div>
+
+    <!-- RESULT -->
+    <div class="card" id="resultCard" style="display:none;">
+      <h2><i class="fa-solid fa-image"></i> نتیجه</h2>
+      <div class="result" id="result"></div>
+    </div>
+
+    <p class="tips"><i class="fa-solid fa-lightbulb"></i> نکته: پرامپت انگلیسی دقیق‌تر = نتیجه بهتر</p>
   </div>
+
   <script>
-    function generateImage(e) {
-      e.preventDefault();
-      const prompt = document.getElementById('prompt').value.trim();
-      if (!prompt) return;
+    function updatePrompt() {
+      const type = document.getElementById('type').value;
+      const colors = document.getElementById('colors').value;
+      const text = document.getElementById('text').value.trim();
+      const style = document.getElementById('style').value;
+      const extra = document.getElementById('extra').value.trim();
       
+      let parts = [];
+      if (type) parts.push(type);
+      if (text) parts.push('with "' + text + '" in golden Arabic calligraphy');
+      if (colors) parts.push(colors + ' color scheme');
+      if (style) parts.push(style);
+      if (extra) parts.push('featuring ' + extra);
+      parts.push('high quality, 4K, detailed, elegant composition');
+      
+      const prompt = parts.join(', ');
+      const preview = document.getElementById('promptPreview');
+      
+      if (parts.length > 1) {
+        preview.innerHTML = '<small style="color:#8e44ad;">پرامپت ساخته شده:</small><br>' + prompt;
+      } else {
+        preview.innerHTML = '<small>لطفاً حداقل "نوع طرح" را انتخاب کنید...</small>';
+      }
+      
+      return prompt;
+    }
+
+    function generateImage() {
+      const type = document.getElementById('type').value;
+      if (!type) { alert('لطفاً نوع طرح را انتخاب کنید.'); return; }
+      
+      const prompt = updatePrompt();
       const btn = document.getElementById('genBtn');
+      const resultCard = document.getElementById('resultCard');
       const result = document.getElementById('result');
       
       btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ساخت...';
-      result.innerHTML = '<p style="text-align:center;color:#a08b73;">در حال ساخت تصویر...</p>';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ساخت تصویر...';
+      resultCard.style.display = 'block';
+      result.innerHTML = '<p style="text-align:center;color:#a08b73;">در حال ساخت تصویر با هوش مصنوعی...</p>';
       
-      const imageUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(prompt) + '?width=512&height=512&nologo=true';
+      const imageUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(prompt) + '?width=512&height=512&nologo=true&seed=' + Math.floor(Math.random() * 10000);
       
       const img = new Image();
       img.onload = function() {
-        result.innerHTML = `<img src="${imageUrl}" alt="طرح ساخته شده">`;
+        result.innerHTML = `
+          <img src="${imageUrl}" alt="طرح ساخته شده">
+          <a href="${imageUrl}" download class="download-btn" target="_blank">
+            <i class="fa-solid fa-download"></i> دانلود تصویر
+          </a>
+          <p style="font-size:11px;color:#a08b73;margin-top:8px;text-align:left;direction:ltr;">${prompt}</p>
+        `;
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> ساخت دوباره';
+        btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ساخت دوباره';
       };
       img.onerror = function() {
-        result.innerHTML = '<p style="color:red;text-align:center;">خطا در ساخت تصویر. دوباره تلاش کنید.</p>';
+        result.innerHTML = '<p style="color:red;text-align:center;">خطا در ساخت تصویر. لطفاً دوباره تلاش کنید یا پرامپت را تغییر دهید.</p>';
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> ساخت طرح';
+        btn.innerHTML = '<i class="fa-solid fa-robot"></i> ساخت تصویر با پرامپت';
       };
       img.src = imageUrl;
     }
+
+    // Initialize prompt
+    updatePrompt();
   </script>
 </body>
 </html>
