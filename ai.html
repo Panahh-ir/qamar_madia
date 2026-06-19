@@ -20,10 +20,13 @@
     .header {
       background: var(--white); padding: 14px 20px; display: flex;
       align-items: center; box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-      justify-content: space-between;
+      justify-content: space-between; position: sticky; top: 0; z-index: 100;
     }
-    .header-back { color: var(--brown); font-size: 14px; font-weight: 600; text-decoration: none; }
-    .header-logo { font-weight: 700; color: var(--dark); font-size: 16px; }
+    .header-back { color: var(--brown); font-size: 14px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+    .header-back:hover { color: var(--dark); }
+    .header-logo-small { display: flex; align-items: center; gap: 8px; }
+    .header-logo-small img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+    .header-logo-small span { font-weight: 700; color: var(--dark); font-size: 16px; }
     .container { max-width: 700px; margin: 0 auto; padding: 24px 20px; }
     .card { background: var(--white); border-radius: 20px; padding: 28px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 16px; }
     h2 { color: var(--dark); margin-bottom: 4px; }
@@ -86,7 +89,10 @@
 <body>
   <header class="header">
     <a href="menu.html" class="header-back"><i class="fa-solid fa-arrow-right"></i> بازگشت</a>
-    <span class="header-logo">رسانه هنری قمر</span>
+    <div class="header-logo-small">
+      <img src="https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg" alt="لوگو">
+      <span>رسانه هنری قمر</span>
+    </div>
     <div style="width:60px;"></div>
   </header>
 
@@ -235,7 +241,6 @@
       img.src = imageUrl;
     }
 
-    // Initialize prompt
     updatePrompt();
   </script>
 </body>
