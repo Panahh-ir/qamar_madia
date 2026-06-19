@@ -3,358 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>رسانه هنری قمر | سفارشات من</title>
+  <title>رسانه هنری قمر | صفحه شخصی</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
-      --cream: #fdfbf7;
-      --milk: #f5efe6;
-      --beige: #ede4d8;
-      --gold: #c8af93;
-      --brown: #8b6f4e;
-      --dark: #3e2c1c;
-      --text: #5c4a3a;
-      --white: #ffffff;
-      --green: #27ae60;
-      --red: #c0392b;
-      --blue: #2980b9;
+      --cream: #fdfbf7; --milk: #f5efe6; --beige: #ede4d8;
+      --gold: #c8af93; --brown: #8b6f4e; --dark: #3e2c1c;
+      --text: #5c4a3a; --white: #ffffff; --green: #27ae60; --red: #c0392b; --blue: #2980b9;
     }
-
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, var(--cream) 0%, var(--milk) 50%, var(--beige) 100%);
-      color: var(--text);
-      min-height: 100vh;
+      color: var(--text); min-height: 100vh;
     }
-
     .header {
-      background: var(--white);
-      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: var(--white); box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      padding: 14px 20px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100;
     }
-
     .header-back {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--brown);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: inherit;
-      text-decoration: none;
+      display: flex; align-items: center; gap: 6px; color: var(--brown);
+      font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none;
     }
-
-    .header-back i { font-size: 16px; }
     .header-back:hover { color: var(--dark); }
-
     .header-logo-small {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-      justify-content: center;
+      display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center;
     }
-    .header-logo-small img {
-      width: 32px; height: 32px;
-      border-radius: 50%; object-fit: cover;
-    }
-    .header-logo-small span {
-      font-weight: 700; color: var(--dark); font-size: 16px;
-    }
-
+    .header-logo-small img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+    .header-logo-small span { font-weight: 700; color: var(--dark); font-size: 16px; }
     .header-logout {
-      color: var(--red);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: inherit;
-      display: none;
-      align-items: center;
-      gap: 4px;
+      color: var(--red); font-size: 12px; font-weight: 600; cursor: pointer;
+      background: none; border: none; font-family: inherit; display: none; align-items: center; gap: 4px;
     }
-
-    .container {
-      max-width: 650px;
-      margin: 0 auto;
-      padding: 24px 20px;
-    }
+    .container { max-width: 700px; margin: 0 auto; padding: 24px 20px; }
 
     .tabs {
-      display: flex;
-      background: var(--white);
-      border-radius: 14px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+      display: flex; background: var(--white); border-radius: 14px;
+      overflow: hidden; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.03);
     }
-
     .tab {
-      flex: 1;
-      padding: 14px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: var(--white);
-      border: none;
-      font-family: inherit;
-      color: #b8a48e;
+      flex: 1; padding: 14px 8px; text-align: center; font-size: 13px; font-weight: 600;
+      cursor: pointer; background: var(--white); border: none; font-family: inherit;
+      color: #b8a48e; transition: all 0.3s ease;
     }
-
     .tab.active { background: var(--brown); color: var(--white); }
-    .tab:first-child { border-left: 1px solid #f0e8dc; }
+    .tab:not(:last-child) { border-left: 1px solid #f0e8dc; }
 
     .form-card {
-      background: var(--white);
-      border-radius: 20px;
-      padding: 28px 24px;
+      background: var(--white); border-radius: 20px; padding: 28px 24px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.04);
     }
-
-    .form-card h2 {
-      font-size: 20px;
-      color: var(--dark);
-      margin-bottom: 6px;
-      text-align: center;
-    }
-
-    .form-card .subtitle {
-      font-size: 13px;
-      color: #a08b73;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
+    .form-card h2 { font-size: 20px; color: var(--dark); margin-bottom: 6px; text-align: center; }
+    .form-card .subtitle { font-size: 13px; color: #a08b73; text-align: center; margin-bottom: 20px; }
     .form-group { margin-bottom: 16px; }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
     .form-group input, .form-group select, .form-group textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid #e5ddd3;
-      border-radius: 12px;
-      font-size: 14px;
-      color: var(--dark);
-      background: #fdfaf6;
-      outline: none;
-      font-family: inherit;
-      transition: all 0.3s ease;
+      width: 100%; padding: 12px 16px; border: 1.5px solid #e5ddd3; border-radius: 12px;
+      font-size: 14px; color: var(--dark); background: #fdfaf6; outline: none; font-family: inherit;
     }
-
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      border-color: var(--gold);
-      background: var(--white);
-      box-shadow: 0 0 0 4px rgba(200,175,147,0.1);
+      border-color: var(--gold); box-shadow: 0 0 0 4px rgba(200,175,147,0.1);
     }
-
-    .form-group input::placeholder { color: #c4b6a6; }
     .form-group textarea { resize: vertical; min-height: 100px; }
-    .form-group select {
-      appearance: none;
-      cursor: pointer;
+    .form-group select { appearance: none; cursor: pointer;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b6f4e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: left 16px center;
-      padding-left: 40px;
+      background-repeat: no-repeat; background-position: left 16px center; padding-left: 40px;
     }
-
     .error-message {
-      display: none;
-      color: var(--red);
-      font-size: 12px;
-      padding: 10px 14px;
-      background: #fdf0ee;
-      border-radius: 8px;
-      border: 1px solid #f5d6d3;
-      text-align: center;
-      margin-bottom: 12px;
+      display: none; color: var(--red); font-size: 12px; padding: 10px 14px;
+      background: #fdf0ee; border-radius: 8px; text-align: center; margin-bottom: 12px;
     }
-
     .success-message {
-      display: none;
-      color: var(--green);
-      font-size: 12px;
-      padding: 10px 14px;
-      background: #eafaf1;
-      border-radius: 8px;
-      border: 1px solid #a9dfbf;
-      text-align: center;
-      margin-bottom: 12px;
+      display: none; color: var(--green); font-size: 12px; padding: 10px 14px;
+      background: #eafaf1; border-radius: 8px; text-align: center; margin-bottom: 12px;
     }
-
     .btn {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 14px;
+      font-weight: 600; cursor: pointer; font-family: inherit; display: flex;
+      align-items: center; justify-content: center; gap: 8px; transition: all 0.3s;
     }
-
-    .btn-primary {
-      background: linear-gradient(145deg, var(--brown), #6d553b);
-      color: var(--white);
-    }
-    .btn-primary:hover { background: linear-gradient(145deg, #7d6343, #5e4932); }
+    .btn-primary { background: linear-gradient(145deg, var(--brown), #6d553b); color: var(--white); }
     .btn-primary:disabled { background: #c4b6a6; cursor: not-allowed; }
-    .btn-green {
-      background: linear-gradient(145deg, #27ae60, #219a52);
-      color: var(--white);
-    }
-    .btn-green:hover { background: linear-gradient(145deg, #219a52, #1e8449); }
-    .btn-sm {
-      width: auto;
-      padding: 10px 20px;
-      font-size: 13px;
-    }
-    .btn-xs {
-      width: auto;
-      padding: 6px 12px;
-      font-size: 11px;
-      border-radius: 8px;
-    }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--brown);
-    }
-    .btn-outline:hover { background: var(--milk); }
-    .btn-danger {
-      background: var(--red);
-      color: var(--white);
-    }
-    .btn-danger:hover { background: #a93226; }
+    .btn-green { background: linear-gradient(145deg, #27ae60, #219a52); color: var(--white); }
+    .btn-sm { width: auto; padding: 10px 20px; font-size: 13px; }
+    .btn-xs { width: auto; padding: 6px 12px; font-size: 11px; border-radius: 8px; }
 
-    .orders-section { display: none; }
-
+    .content-section { display: none; }
+    .content-section.active { display: block; }
     .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
     }
     .section-header h2 { font-size: 20px; color: var(--dark); }
-
-    .order-card {
-      background: var(--white);
-      border-radius: 14px;
-      padding: 16px 20px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    .card {
+      background: var(--white); border-radius: 14px; padding: 16px 20px;
+      margin-bottom: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.03);
     }
-
-    .order-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .order-id { font-size: 12px; color: #a08b73; }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .card-id { font-size: 12px; color: #a08b73; }
     .badge {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 500;
+      padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 500;
     }
     .badge-pending { background: #fef9e7; color: #f39c12; }
     .badge-progress { background: #eaf2f8; color: var(--blue); }
     .badge-delivered { background: #eafaf1; color: var(--green); }
-
-    .order-type {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--dark);
-      margin-bottom: 4px;
+    .badge-success { background: #eafaf1; color: var(--green); }
+    .card-title { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+    .card-desc { font-size: 12px; color: #6b5b4a; margin-bottom: 8px; }
+    .card-date { font-size: 11px; color: #b8a48e; margin-bottom: 8px; }
+    .card-download a {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 12px; color: var(--white); background: var(--brown);
+      padding: 6px 14px; border-radius: 8px; text-decoration: none;
     }
-    .order-desc {
-      font-size: 12px;
-      color: #6b5b4a;
-      margin-bottom: 8px;
-    }
-    .order-date {
-      font-size: 11px;
-      color: #b8a48e;
-      margin-bottom: 8px;
-    }
-    .order-file a {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      color: var(--brown);
-      text-decoration: none;
-    }
-
-    .order-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .no-orders {
-      text-align: center;
-      padding: 40px 20px;
-      color: #b8a48e;
-    }
-    .no-orders i { font-size: 48px; margin-bottom: 12px; display: block; }
+    .card-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .no-data { text-align: center; padding: 40px 20px; color: #b8a48e; }
+    .no-data i { font-size: 48px; margin-bottom: 12px; display: block; }
 
     .new-order-section { display: none; }
-
-    .section-title-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    .section-title-bar button {
-      background: none;
-      border: none;
-      color: var(--brown);
-      font-size: 18px;
-      cursor: pointer;
-    }
+    .back-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .back-bar button { background: none; border: none; color: var(--brown); font-size: 18px; cursor: pointer; }
 
     @media (max-width: 600px) {
       .container { padding: 16px 12px; }
       .form-card { padding: 20px 16px; }
+      .tab { font-size: 11px; padding: 12px 4px; }
     }
   </style>
 </head>
 <body>
 
   <header class="header">
-    <a href="menu.html" class="header-back">
-      <i class="fa-solid fa-arrow-right"></i> بازگشت
-    </a>
+    <a href="menu.html" class="header-back"><i class="fa-solid fa-arrow-right"></i> بازگشت</a>
     <div class="header-logo-small">
       <img src="https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg" alt="لوگو">
       <span>رسانه هنری قمر</span>
@@ -369,26 +149,18 @@
     <!-- AUTH -->
     <div id="authSection">
       <div class="tabs">
-        <button class="tab active" onclick="switchTab('login')">ورود</button>
-        <button class="tab" id="registerTabBtn" onclick="switchTab('register')">ثبت‌نام</button>
+        <button class="tab active" onclick="switchAuthTab('login')">ورود</button>
+        <button class="tab" onclick="switchAuthTab('register')">ثبت‌نام</button>
       </div>
 
       <div class="form-card" id="loginForm">
         <h2><i class="fa-solid fa-right-to-bracket"></i> ورود</h2>
         <p class="subtitle">به حساب کاربری خود وارد شوید</p>
         <form onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label>نام کاربری</label>
-            <input type="text" id="loginUsername" placeholder="نام کاربری" required>
-          </div>
-          <div class="form-group">
-            <label>رمز عبور</label>
-            <input type="password" id="loginPassword" placeholder="••••••••" required>
-          </div>
+          <div class="form-group"><label>نام کاربری</label><input type="text" id="loginUsername" required></div>
+          <div class="form-group"><label>رمز عبور</label><input type="password" id="loginPassword" required></div>
           <div class="error-message" id="loginError"></div>
-          <button type="submit" class="btn btn-primary" id="loginBtn">
-            <i class="fa-solid fa-right-to-bracket"></i> ورود
-          </button>
+          <button type="submit" class="btn btn-primary" id="loginBtn"><i class="fa-solid fa-right-to-bracket"></i> ورود</button>
         </form>
       </div>
 
@@ -396,51 +168,53 @@
         <h2><i class="fa-solid fa-user-plus"></i> ثبت‌نام</h2>
         <p class="subtitle">حساب جدید بسازید</p>
         <form onsubmit="handleRegister(event)">
-          <div class="form-group">
-            <label>نام و نام خانوادگی</label>
-            <input type="text" id="regName" placeholder="نام کامل" required>
-          </div>
-          <div class="form-group">
-            <label>راه ارتباطی (آیدی یا شماره ایتا)</label>
-            <input type="text" id="regContact" placeholder="آیدی یا شماره در ایتا" required>
-          </div>
-          <div class="form-group">
-            <label>نام کاربری</label>
-            <input type="text" id="regUsername" placeholder="نام کاربری" required>
-          </div>
-          <div class="form-group">
-            <label>رمز عبور</label>
-            <input type="password" id="regPassword" placeholder="حداقل ۴ کاراکتر" required minlength="4">
-          </div>
+          <div class="form-group"><label>نام و نام خانوادگی</label><input type="text" id="regName" required></div>
+          <div class="form-group"><label>راه ارتباطی (ایتا)</label><input type="text" id="regContact" required></div>
+          <div class="form-group"><label>نام کاربری</label><input type="text" id="regUsername" required></div>
+          <div class="form-group"><label>رمز عبور</label><input type="password" id="regPassword" required minlength="4"></div>
           <div class="error-message" id="regError"></div>
           <div class="success-message" id="regSuccess"></div>
-          <button type="submit" class="btn btn-primary" id="regBtn">
-            <i class="fa-solid fa-user-plus"></i> ثبت‌نام
-          </button>
+          <button type="submit" class="btn btn-primary" id="regBtn"><i class="fa-solid fa-user-plus"></i> ثبت‌نام</button>
         </form>
       </div>
     </div>
 
-    <!-- ORDERS LIST -->
-    <div class="orders-section" id="ordersSection">
-      <div class="section-header">
-        <h2><i class="fa-solid fa-clipboard-list"></i> سفارش‌های من</h2>
-        <button class="btn btn-green btn-sm" onclick="showNewOrder()">
-          <i class="fa-solid fa-plus"></i> سفارش جدید
-        </button>
+    <!-- LOGGED IN -->
+    <div id="loggedSection" style="display:none;">
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('orders')">سفارشات من</button>
+        <button class="tab" onclick="switchTab('purchases')">خریدهای من</button>
       </div>
-      <div id="ordersList"></div>
+
+      <!-- ORDERS -->
+      <div class="content-section active" id="ordersContent">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-clipboard-list"></i> سفارشات</h2>
+          <button class="btn btn-green btn-sm" onclick="showNewOrder()">
+            <i class="fa-solid fa-plus"></i> سفارش جدید
+          </button>
+        </div>
+        <div id="ordersList"></div>
+      </div>
+
+      <!-- PURCHASES -->
+      <div class="content-section" id="purchasesContent">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-bag-shopping"></i> خریدها</h2>
+        </div>
+        <div id="purchasesList"></div>
+      </div>
     </div>
 
-    <!-- NEW/EDIT ORDER -->
+    <!-- NEW ORDER -->
     <div class="new-order-section" id="newOrderSection">
-      <div class="section-title-bar">
+      <div class="back-bar">
         <button onclick="backToOrders()"><i class="fa-solid fa-arrow-right"></i></button>
-        <h2 id="orderFormTitle">ثبت سفارش جدید</h2>
+        <h2>ثبت سفارش جدید</h2>
       </div>
       <div class="form-card">
-        <form onsubmit="handleOrderSubmit(event)">
-          <input type="hidden" id="editOrderId">
+        <form onsubmit="handleNewOrder(event)">
           <div class="form-group">
             <label>نوع کار</label>
             <select id="newWorkType" required>
@@ -458,9 +232,7 @@
           </div>
           <div class="error-message" id="newOrderError"></div>
           <div class="success-message" id="newOrderSuccess"></div>
-          <button type="submit" class="btn btn-green" id="newOrderBtn">
-            <i class="fa-solid fa-paper-plane"></i> ثبت سفارش
-          </button>
+          <button type="submit" class="btn btn-green"><i class="fa-solid fa-paper-plane"></i> ثبت سفارش</button>
         </form>
       </div>
     </div>
@@ -468,38 +240,43 @@
   </div>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycby1E5_oBz9niqfTufk9SqX1bhXkH_uIc9Eg1-c3sSDprsUTXANfjz2gkWk0SEJrmVLSvQ/exec';
-
+    const API_URL = 'https://script.google.com/macros/s/AKfycbw8P8cVOL4XTqFvfPhy7pYIJF211v0syTmFYjR41AAvQBUs90QZavQKjzZbQSfF5K4q7Q/exec';
     let currentCustomer = null;
+
     const workTypeLabels = {
-      poster: 'پوستر',
-      typography: 'تایپوگرافی',
-      profile: 'پروفایل',
-      logo: 'لوگو',
-      other: 'سایر'
+      poster: 'پوستر', typography: 'تایپوگرافی', profile: 'پروفایل', logo: 'لوگو', other: 'سایر'
     };
 
     window.addEventListener('DOMContentLoaded', () => {
       const saved = localStorage.getItem('qm_customer');
       if (saved) {
-        try {
-          currentCustomer = JSON.parse(saved);
-          showOrdersSection();
-        } catch(e) { localStorage.removeItem('qm_customer'); }
+        try { currentCustomer = JSON.parse(saved); showLoggedIn(); }
+        catch(e) { localStorage.removeItem('qm_customer'); }
       }
     });
 
-    function switchTab(tab) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    function switchAuthTab(tab) {
+      document.querySelectorAll('#authSection .tab').forEach(t => t.classList.remove('active'));
       document.getElementById('loginForm').style.display = 'none';
       document.getElementById('registerForm').style.display = 'none';
-      
       if (tab === 'login') {
-        document.querySelector('.tab:first-child').classList.add('active');
+        document.querySelector('#authSection .tab:first-child').classList.add('active');
         document.getElementById('loginForm').style.display = 'block';
       } else {
-        document.getElementById('registerTabBtn').classList.add('active');
+        document.querySelector('#authSection .tab:last-child').classList.add('active');
         document.getElementById('registerForm').style.display = 'block';
+      }
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('#loggedSection .tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+      if (tab === 'orders') {
+        document.querySelector('#loggedSection .tab:first-child').classList.add('active');
+        document.getElementById('ordersContent').classList.add('active');
+      } else {
+        document.querySelector('#loggedSection .tab:last-child').classList.add('active');
+        document.getElementById('purchasesContent').classList.add('active');
       }
     }
 
@@ -509,35 +286,19 @@
       const password = document.getElementById('loginPassword').value;
       const errorDiv = document.getElementById('loginError');
       const btn = document.getElementById('loginBtn');
-
-      if (!username || !password) return;
-
       errorDiv.style.display = 'none';
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ورود...';
-
       try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'customerLogin', username, password })
-        });
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'customerLogin', username, password }) });
         const data = await res.json();
-
         if (data.result === 'success') {
           currentCustomer = data.data;
           localStorage.setItem('qm_customer', JSON.stringify(currentCustomer));
-          showOrdersSection();
-        } else {
-          errorDiv.textContent = data.message || 'نام کاربری یا رمز عبور اشتباه است';
-          errorDiv.style.display = 'block';
-        }
-      } catch(e) {
-        errorDiv.textContent = 'خطا در ارتباط با سرور';
-        errorDiv.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> ورود';
-      }
+          showLoggedIn();
+        } else { errorDiv.textContent = data.message; errorDiv.style.display = 'block'; }
+      } catch(e) { errorDiv.textContent = 'خطا'; errorDiv.style.display = 'block'; }
+      finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> ورود'; }
     }
 
     async function handleRegister(e) {
@@ -549,269 +310,148 @@
       const errorDiv = document.getElementById('regError');
       const successDiv = document.getElementById('regSuccess');
       const btn = document.getElementById('regBtn');
-
-      if (!name || !contact || !username || !password) return;
-
-      errorDiv.style.display = 'none';
-      successDiv.style.display = 'none';
+      errorDiv.style.display = 'none'; successDiv.style.display = 'none';
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ثبت‌نام...';
-
       try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'customerRegister', username, password, name, contact })
-        });
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'customerRegister', username, password, name, contact }) });
         const data = await res.json();
-
         if (data.result === 'success') {
-          successDiv.textContent = 'ثبت‌نام با موفقیت انجام شد! حالا می‌توانید وارد شوید.';
-          successDiv.style.display = 'block';
+          successDiv.textContent = 'ثبت‌نام انجام شد! حالا وارد شوید.'; successDiv.style.display = 'block';
           ['regName','regContact','regUsername','regPassword'].forEach(id => document.getElementById(id).value = '');
-          setTimeout(() => switchTab('login'), 1500);
-        } else {
-          errorDiv.textContent = data.message || 'خطا در ثبت‌نام';
-          errorDiv.style.display = 'block';
-        }
-      } catch(e) {
-        errorDiv.textContent = 'خطا در ارتباط با سرور';
-        errorDiv.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> ثبت‌نام';
-      }
+          setTimeout(() => switchAuthTab('login'), 1500);
+        } else { errorDiv.textContent = data.message; errorDiv.style.display = 'block'; }
+      } catch(e) { errorDiv.textContent = 'خطا'; errorDiv.style.display = 'block'; }
+      finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> ثبت‌نام'; }
     }
 
     function logout() {
       localStorage.removeItem('qm_customer');
       currentCustomer = null;
       document.getElementById('authSection').style.display = 'block';
-      document.getElementById('ordersSection').style.display = 'none';
+      document.getElementById('loggedSection').style.display = 'none';
       document.getElementById('newOrderSection').style.display = 'none';
       document.getElementById('logoutBtn').style.display = 'none';
-      document.getElementById('loginForm').style.display = 'block';
-      document.getElementById('registerForm').style.display = 'none';
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelector('.tab:first-child').classList.add('active');
     }
 
-    function showOrdersSection() {
+    function showLoggedIn() {
       document.getElementById('authSection').style.display = 'none';
-      document.getElementById('ordersSection').style.display = 'block';
+      document.getElementById('loggedSection').style.display = 'block';
       document.getElementById('newOrderSection').style.display = 'none';
       document.getElementById('logoutBtn').style.display = 'flex';
+      document.querySelector('#loggedSection .tab:first-child').classList.add('active');
+      document.getElementById('ordersContent').classList.add('active');
+      document.querySelector('#loggedSection .tab:last-child').classList.remove('active');
+      document.getElementById('purchasesContent').classList.remove('active');
       loadMyOrders();
+      loadMyPurchases();
     }
 
-    function showNewOrder() {
-      document.getElementById('editOrderId').value = '';
-      document.getElementById('orderFormTitle').textContent = 'ثبت سفارش جدید';
-      document.getElementById('newWorkType').value = '';
-      document.getElementById('newDescription').value = '';
-      document.getElementById('newOrderError').style.display = 'none';
-      document.getElementById('newOrderSuccess').style.display = 'none';
-      document.getElementById('ordersSection').style.display = 'none';
-      document.getElementById('newOrderSection').style.display = 'block';
-    }
-
-    function showEditOrder(orderId, workType, description) {
-      document.getElementById('editOrderId').value = orderId;
-      document.getElementById('orderFormTitle').textContent = 'ویرایش سفارش';
-      document.getElementById('newWorkType').value = workType;
-      document.getElementById('newDescription').value = description;
-      document.getElementById('newOrderError').style.display = 'none';
-      document.getElementById('newOrderSuccess').style.display = 'none';
-      document.getElementById('ordersSection').style.display = 'none';
-      document.getElementById('newOrderSection').style.display = 'block';
-    }
-
-    function backToOrders() {
-      document.getElementById('newOrderSection').style.display = 'none';
-      document.getElementById('ordersSection').style.display = 'block';
-      loadMyOrders();
-    }
-
+    // ========== ORDERS ==========
     async function loadMyOrders() {
       const container = document.getElementById('ordersList');
-      
       if (!currentCustomer || !currentCustomer.orders) {
-        container.innerHTML = '<div class="no-orders"><i class="fa-solid fa-inbox"></i><p>هنوز سفارشی ثبت نکرده‌اید.</p></div>';
+        container.innerHTML = '<div class="no-data"><i class="fa-solid fa-inbox"></i><p>هنوز سفارشی ثبت نکرده‌اید.</p></div>';
         return;
       }
-
       try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'getOrders' })
-        });
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getOrders' }) });
         const data = await res.json();
-
         if (data.result === 'success') {
           const myOrderIds = currentCustomer.orders.split(',').map(o => o.trim());
           const myOrders = data.data.orders.filter(o => myOrderIds.includes(o.order_id));
-
           if (myOrders.length === 0) {
-            container.innerHTML = '<div class="no-orders"><i class="fa-solid fa-inbox"></i><p>هنوز سفارشی ثبت نکرده‌اید.</p></div>';
+            container.innerHTML = '<div class="no-data"><i class="fa-solid fa-inbox"></i><p>هنوز سفارشی ثبت نکرده‌اید.</p></div>';
             return;
           }
-
           container.innerHTML = myOrders.reverse().map(o => {
-            const statusMap = {
-              pending: ['badge-pending', 'در انتظار'],
-              in_progress: ['badge-progress', 'در حال انجام'],
-              delivered: ['badge-delivered', 'تحویل داده شد']
-            };
-            const [badgeClass, statusText] = statusMap[o.status] || ['badge-pending', 'در انتظار'];
-            const isPending = o.status === 'pending';
-
+            const statusMap = { pending: ['badge-pending','در انتظار'], in_progress: ['badge-progress','در حال انجام'], delivered: ['badge-delivered','تحویل داده شد'] };
+            const [badgeClass, statusText] = statusMap[o.status] || ['badge-pending','در انتظار'];
             return `
-              <div class="order-card">
-                <div class="order-card-header">
-                  <span class="order-id">#${o.order_id}</span>
-                  <span class="badge ${badgeClass}">${statusText}</span>
-                </div>
-                <div class="order-type">${workTypeLabels[o.work_type] || o.work_type || 'نامشخص'}</div>
-                <div class="order-desc">${o.description || 'بدون توضیح'}</div>
-                <div class="order-date">${o.date_submitted || '-'}</div>
-                ${o.file_link ? `<div class="order-file"><a href="${o.file_link}" target="_blank"><i class="fa-solid fa-download"></i> دانلود فایل تحویلی</a></div>` : ''}
-                ${isPending ? `
-                  <div class="order-actions">
-                    <button class="btn btn-xs btn-outline" onclick="showEditOrder('${o.order_id}', '${o.work_type || ''}', '${(o.description || '').replace(/'/g, "\\'")}')">
-                      <i class="fa-solid fa-pen"></i> ویرایش
-                    </button>
-                    <button class="btn btn-xs btn-danger" onclick="deleteMyOrder('${o.order_id}')">
-                      <i class="fa-solid fa-trash"></i> حذف
-                    </button>
-                  </div>
-                ` : ''}
+              <div class="card">
+                <div class="card-header"><span class="card-id">#${o.order_id}</span><span class="badge ${badgeClass}">${statusText}</span></div>
+                <div class="card-title">${workTypeLabels[o.work_type] || o.work_type || 'نامشخص'}</div>
+                <div class="card-desc">${o.description || '-'}</div>
+                <div class="card-date">${o.date_submitted || '-'}</div>
+                ${o.file_link ? `<div class="card-download"><a href="${o.file_link}" download><i class="fa-solid fa-download"></i> دانلود فایل</a></div>` : ''}
               </div>
             `;
           }).join('');
         }
-      } catch(e) {
-        container.innerHTML = '<p>خطا در بارگذاری سفارشات</p>';
-      }
+      } catch(e) { container.innerHTML = '<p>خطا</p>'; }
     }
 
-    async function deleteMyOrder(orderId) {
-      if (!confirm('آیا از حذف این سفارش مطمئن هستید؟')) return;
-
+    // ========== PURCHASES ==========
+    async function loadMyPurchases() {
+      const container = document.getElementById('purchasesList');
+      if (!currentCustomer || !currentCustomer.purchases) {
+        container.innerHTML = '<div class="no-data"><i class="fa-solid fa-bag-shopping"></i><p>هنوز خریدی انجام نداده‌اید.</p></div>';
+        return;
+      }
       try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'deleteOrder', order_id: orderId })
-        });
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getProducts', role: 'visitor', username: '' }) });
         const data = await res.json();
-
         if (data.result === 'success') {
-          // Remove from customer orders
-          const orderIds = currentCustomer.orders.split(',').map(o => o.trim());
-          const updated = orderIds.filter(id => id !== orderId).join(', ');
-          currentCustomer.orders = updated;
-          localStorage.setItem('qm_customer', JSON.stringify(currentCustomer));
-
-          await fetch(API_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-              action: 'updateCustomerOrders',
-              customer_id: currentCustomer.customer_id,
-              orders: updated
-            })
+          const purchaseItems = currentCustomer.purchases.split(',').map(p => p.trim());
+          const purchases = purchaseItems.map(p => {
+            const [productId, productName, price] = p.split(':');
+            const product = data.data.products.find(pr => pr.product_id === productId);
+            return { productId, productName, price, file_link: product ? product.file_link : null };
           });
 
-          loadMyOrders();
-        } else {
-          alert(data.message);
+          container.innerHTML = purchases.reverse().map(p => `
+            <div class="card">
+              <div class="card-header"><span class="card-id">${p.productId}</span><span class="badge badge-success">خریداری شده</span></div>
+              <div class="card-title">${p.productName}</div>
+              <div class="card-desc">${Number(p.price).toLocaleString('fa-IR')} تومان</div>
+              ${p.file_link ? `<div class="card-download"><a href="${p.file_link}" download><i class="fa-solid fa-download"></i> دانلود فایل</a></div>` : ''}
+            </div>
+          `).join('');
         }
-      } catch(e) {
-        alert('خطا در ارتباط با سرور');
-      }
+      } catch(e) {}
     }
 
-    async function handleOrderSubmit(e) {
+    // ========== NEW ORDER ==========
+    function showNewOrder() {
+      document.getElementById('loggedSection').style.display = 'none';
+      document.getElementById('newOrderSection').style.display = 'block';
+      document.getElementById('newOrderError').style.display = 'none';
+      document.getElementById('newOrderSuccess').style.display = 'none';
+    }
+
+    function backToOrders() {
+      document.getElementById('newOrderSection').style.display = 'none';
+      document.getElementById('loggedSection').style.display = 'block';
+      loadMyOrders();
+    }
+
+    async function handleNewOrder(e) {
       e.preventDefault();
-      const editId = document.getElementById('editOrderId').value;
       const workType = document.getElementById('newWorkType').value;
       const description = document.getElementById('newDescription').value.trim();
       const errorDiv = document.getElementById('newOrderError');
       const successDiv = document.getElementById('newOrderSuccess');
-      const btn = document.getElementById('newOrderBtn');
-
       if (!workType || !description) return;
-
-      errorDiv.style.display = 'none';
-      successDiv.style.display = 'none';
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ثبت...';
-
+      errorDiv.style.display = 'none'; successDiv.style.display = 'none';
       try {
-        if (editId) {
-          // Edit
-          const res = await fetch(API_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-              action: 'editOrder',
-              order_id: editId,
-              work_type: workType,
-              description: description
-            })
-          });
-          const data = await res.json();
-
-          if (data.result === 'success') {
-            successDiv.textContent = 'سفارش با موفقیت ویرایش شد!';
-            successDiv.style.display = 'block';
-            setTimeout(() => backToOrders(), 1000);
-          } else {
-            errorDiv.textContent = data.message;
-            errorDiv.style.display = 'block';
-          }
-        } else {
-          // New
-          const res = await fetch(API_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-              action: 'addOrder',
-              customer_name: currentCustomer.name,
-              contact: currentCustomer.contact,
-              work_type: workType,
-              description: description
-            })
-          });
-          const data = await res.json();
-
-          if (data.result === 'success') {
-            const orderId = data.data.order_id;
-            const updatedOrders = currentCustomer.orders ? currentCustomer.orders + ', ' + orderId : orderId;
-            currentCustomer.orders = updatedOrders;
-            localStorage.setItem('qm_customer', JSON.stringify(currentCustomer));
-
-            await fetch(API_URL, {
-              method: 'POST',
-              body: JSON.stringify({
-                action: 'updateCustomerOrders',
-                customer_id: currentCustomer.customer_id,
-                orders: updatedOrders
-              })
-            });
-
-            successDiv.textContent = 'سفارش با موفقیت ثبت شد!';
-            successDiv.style.display = 'block';
-            document.getElementById('newWorkType').value = '';
-            document.getElementById('newDescription').value = '';
-            setTimeout(() => backToOrders(), 1500);
-          } else {
-            errorDiv.textContent = data.message;
-            errorDiv.style.display = 'block';
-          }
-        }
-      } catch(e) {
-        errorDiv.textContent = 'خطا در ارتباط با سرور';
-        errorDiv.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ثبت سفارش';
-      }
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({
+          action: 'addOrder', customer_name: currentCustomer.name, contact: currentCustomer.contact,
+          work_type: workType, description: description
+        })});
+        const data = await res.json();
+        if (data.result === 'success') {
+          const orderId = data.data.order_id;
+          const updatedOrders = currentCustomer.orders ? currentCustomer.orders + ', ' + orderId : orderId;
+          currentCustomer.orders = updatedOrders;
+          localStorage.setItem('qm_customer', JSON.stringify(currentCustomer));
+          await fetch(API_URL, { method: 'POST', body: JSON.stringify({
+            action: 'updateCustomerOrders', customer_id: currentCustomer.customer_id, orders: updatedOrders
+          })});
+          successDiv.textContent = 'سفارش ثبت شد!'; successDiv.style.display = 'block';
+          document.getElementById('newWorkType').value = ''; document.getElementById('newDescription').value = '';
+          setTimeout(() => backToOrders(), 1500);
+        } else { errorDiv.textContent = data.message; errorDiv.style.display = 'block'; }
+      } catch(e) { errorDiv.textContent = 'خطا'; errorDiv.style.display = 'block'; }
     }
   </script>
 </body>
