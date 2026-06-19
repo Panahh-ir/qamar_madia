@@ -108,7 +108,8 @@
     }
     .success-box .success-icon i { font-size: 32px; color: var(--green); }
     .success-box h2 { font-size: 20px; color: var(--dark); margin-bottom: 8px; }
-    .success-box p { font-size: 14px; color: #a08b73; margin-bottom: 20px; }
+    .success-box p { font-size: 14px; color: var(--dark); margin-bottom: 12px; line-height: 1.8; }
+    #downloadBtnContainer { margin: 8px 0; }
 
     @media (max-width: 600px) {
       .container { padding: 16px 12px; }
@@ -129,12 +130,10 @@
 
   <div class="container">
 
-    <!-- PRODUCT PREVIEW -->
     <div class="product-preview" id="productPreview">
       <p style="text-align:center;padding:20px;">در حال بارگذاری محصول...</p>
     </div>
 
-    <!-- AUTH -->
     <div id="authSection">
       <div class="tabs">
         <button class="tab active" onclick="switchTab('login')">ورود</button>
@@ -167,14 +166,13 @@
       </div>
     </div>
 
-    <!-- CONFIRM -->
     <div id="confirmSection" style="display:none;">
       <div class="form-card" style="text-align:center;">
         <h2><i class="fa-solid fa-check-circle"></i> تایید خرید</h2>
         <p class="subtitle" id="confirmUserName"></p>
-        <p style="margin-bottom:16px;color:#a08b73;font-size:13px;">با کلیک روی دکمه زیر به درگاه پرداخت هدایت می‌شوید</p>
+        <p style="margin-bottom:16px;color:#a08b73;font-size:13px;">با کلیک روی دکمه زیر خرید نهایی می‌شود</p>
         <button class="btn btn-green" onclick="goToPayment()">
-          <i class="fa-solid fa-credit-card"></i> پرداخت و ثبت خرید
+          <i class="fa-solid fa-credit-card"></i> پرداخت و دریافت فایل
         </button>
         <button class="btn btn-outline" style="margin-top:8px;" onclick="logoutPay()">
           <i class="fa-solid fa-right-from-bracket"></i> خروج
@@ -182,12 +180,12 @@
       </div>
     </div>
 
-    <!-- SUCCESS -->
     <div class="success-box" id="successBox">
       <div class="success-icon"><i class="fa-solid fa-check"></i></div>
       <h2>خرید با موفقیت ثبت شد!</h2>
       <p id="successText"></p>
-      <a href="menu.html" class="btn btn-primary" style="display:inline-flex;width:auto;padding:12px 28px;">
+      <div id="downloadBtnContainer"></div>
+      <a href="menu.html" class="btn btn-primary" style="display:inline-flex;width:auto;padding:12px 28px;margin-top:8px;">
         <i class="fa-solid fa-arrow-right"></i> بازگشت به منو
       </a>
     </div>
@@ -195,7 +193,7 @@
   </div>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbxragsEGLI8sfLqntmQYeW_AU_1u2i1LqM803i5G2WaxjHsluN-rh5NFepujg7IhMao_g/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbw8P8cVOL4XTqFvfPhy7pYIJF211v0syTmFYjR41AAvQBUs90QZavQKjzZbQSfF5K4q7Q/exec';
     let currentCustomer = null;
     let selectedProduct = null;
 
@@ -304,7 +302,7 @@
       document.getElementById('authSection').style.display = 'none';
       document.getElementById('confirmSection').style.display = 'block';
       document.getElementById('successBox').style.display = 'none';
-      document.getElementById('confirmUserName').textContent = currentCustomer.name + ' عزیز، آماده پرداخت هستید';
+      document.getElementById('confirmUserName').textContent = currentCustomer.name + ' عزیز، آماده دریافت فایل هستید';
     }
 
     function logoutPay() {
@@ -327,38 +325,39 @@
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ثبت خرید...';
 
       try {
-        const res = await fetch(API_URL, {
+        await fetch(API_URL, {
           method: 'POST',
           body: JSON.stringify({
             action: 'addPurchase',
             customer_id: currentCustomer.customer_id,
             product_id: selectedProduct.product_id,
             product_name: selectedProduct.name,
-            price: selectedProduct.price
+            price: selectedProduct.price,
+            file_link: selectedProduct.file_link
           })
         });
-        const data = await res.json();
 
-        if (data.result === 'success') {
-          document.getElementById('confirmSection').style.display = 'none';
-          document.getElementById('successBox').style.display = 'block';
-          document.getElementById('successText').textContent = 
-            'محصول: ' + selectedProduct.name + '\nمبلغ: ' + Number(selectedProduct.price).toLocaleString('fa-IR') + ' تومان';
-          
-          // Clear product from localStorage
-          localStorage.removeItem('qm_buy_product');
-          localStorage.removeItem('qm_buy_product_name');
-          
-          // Here redirect to real payment gateway:
-          // setTimeout(() => { window.location.href = 'https://zarinp.al/your-link'; }, 2000);
-        } else {
-          alert(data.message || 'خطا در ثبت خرید');
+        document.getElementById('confirmSection').style.display = 'none';
+        document.getElementById('successBox').style.display = 'block';
+        document.getElementById('successText').innerHTML = 
+          'محصول: <strong>' + selectedProduct.name + '</strong><br>مبلغ: <strong>' + Number(selectedProduct.price).toLocaleString('fa-IR') + ' تومان</strong>';
+
+        if (selectedProduct.file_link) {
+          document.getElementById('downloadBtnContainer').innerHTML = `
+            <a href="${selectedProduct.file_link}" download class="btn btn-green" style="display:inline-flex;width:auto;padding:12px 28px;text-decoration:none;">
+              <i class="fa-solid fa-download"></i> دانلود فایل
+            </a>
+          `;
         }
+
+        localStorage.removeItem('qm_buy_product');
+        localStorage.removeItem('qm_buy_product_name');
+
       } catch(e) {
         alert('خطا در ارتباط با سرور');
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-credit-card"></i> پرداخت و ثبت خرید';
+        btn.innerHTML = '<i class="fa-solid fa-credit-card"></i> پرداخت و دریافت فایل';
       }
     }
   </script>
