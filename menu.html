@@ -123,6 +123,9 @@
 
   <header class="header">
     <div class="header-inner">
+      <a href="mypage.html" class="header-login-btn">
+        <i class="fa-solid fa-user"></i> صفحه شخصی
+      </a>
       <div style="display:flex;align-items:center;gap:10px;">
         <img src="https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg" alt="رسانه هنری قمر" class="header-logo">
         <div>
@@ -130,9 +133,6 @@
           <div class="header-subtitle">هنر ماندگار، از قمر ماندگارتر</div>
         </div>
       </div>
-      <a href="mypage.html" class="header-login-btn">
-        <i class="fa-solid fa-user"></i> صفحه شخصی
-      </a>
     </div>
   </header>
 
@@ -170,12 +170,31 @@
   </footer>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbw8P8cVOL4XTqFvfPhy7pYIJF211v0syTmFYjR41AAvQBUs90QZavQKjzZbQSfF5K4q7Q/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbz4tI_IxdN__qlIQn_Dy1uGakTzZ6lexrT5BMVHyxvvWlLzkjswliMt-1lLvlvhaEgCOg/exec';
     let allProducts = [];
 
     const categoryLabels = {
       poster: 'پوستر', typography: 'تایپوگرافی', profile: 'پروفایل', logo: 'لوگو', other: 'سایر'
     };
+
+    const customOrderCard = `
+      <div class="product-card" onclick="window.location.href='mypage.html'" style="border: 2px dashed var(--gold);">
+        <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #fdfbf7, #f5efe6);">
+          <i class="fa-solid fa-pen-to-square" style="font-size:48px;color:var(--brown);"></i>
+        </div>
+        <div class="product-info">
+          <div class="product-name">سفارش ساخت اختصاصی</div>
+          <div class="product-meta">
+            <span class="product-category" style="background:var(--brown);color:var(--white);">ویژه</span>
+            <span class="product-price" style="color:var(--brown);">ثبت سفارش <span>کلیک کنید</span></span>
+          </div>
+          <div class="product-like-row">
+            <span class="product-likes-count"><i class="fa-solid fa-star"></i> نامحدود</span>
+            <span style="font-size:10px;color:#a08b73;">طراحی دلخواه شما</span>
+          </div>
+        </div>
+      </div>
+    `;
 
     async function loadProducts() {
       try {
@@ -185,20 +204,20 @@
           allProducts = data.data.products.filter(p => p.status !== 'sold');
           renderProducts(allProducts);
         } else {
-          document.getElementById('productsGrid').innerHTML = '<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>هنوز محصولی ثبت نشده است.</p></div>';
+          document.getElementById('productsGrid').innerHTML = customOrderCard + '<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>هنوز محصولی ثبت نشده است.</p></div>';
         }
       } catch(e) {
-        document.getElementById('productsGrid').innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>خطا در بارگذاری</p></div>';
+        document.getElementById('productsGrid').innerHTML = customOrderCard + '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>خطا در بارگذاری</p></div>';
       }
     }
 
     function renderProducts(products) {
       const grid = document.getElementById('productsGrid');
       if (products.length === 0) {
-        grid.innerHTML = '<div class="no-results"><i class="fa-solid fa-search"></i><p>محصولی با این مشخصات پیدا نشد.</p></div>';
+        grid.innerHTML = customOrderCard + '<div class="no-results"><i class="fa-solid fa-search"></i><p>محصولی با این مشخصات پیدا نشد.</p></div>';
         return;
       }
-      grid.innerHTML = products.map(p => {
+      grid.innerHTML = customOrderCard + products.map(p => {
         const hasLiked = localStorage.getItem('qm_liked_' + p.product_id) === 'true';
         return `
           <div class="product-card" onclick="goToProduct('${p.product_id}')">
