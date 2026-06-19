@@ -31,9 +31,7 @@
       padding: 8px 14px; border-radius: 10px;
       transition: all 0.3s ease; white-space: nowrap;
     }
-    .btn-profile {
-      color: var(--brown); border: 1.5px solid var(--gold);
-    }
+    .btn-profile { color: var(--brown); border: 1.5px solid var(--gold); }
     .btn-profile:hover { background: var(--milk); }
     .header-logo {
       width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
@@ -70,21 +68,8 @@
     .filter-select select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,175,147,0.1); }
 
     .products-container { max-width: 1100px; margin: 0 auto; padding: 16px; }
-    .section-header-row {
-      display: flex; align-items: center; justify-content: center;
-      gap: 16px; margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .section-title { text-align: center; font-size: 20px; color: var(--dark); position: relative; }
+    .section-title { text-align: center; font-size: 20px; color: var(--dark); margin-bottom: 20px; position: relative; }
     .section-title::after { content: ''; display: block; width: 50px; height: 2px; background: var(--gold); margin: 10px auto 0; border-radius: 1px; }
-    .btn-ai-section {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: linear-gradient(145deg, #8e44ad, #6c3483);
-      color: #fff; padding: 8px 16px; border-radius: 10px;
-      text-decoration: none; font-size: 13px; font-weight: 600;
-      transition: all 0.3s ease; white-space: nowrap;
-    }
-    .btn-ai-section:hover { background: linear-gradient(145deg, #7d3c98, #5b2c6f); transform: translateY(-1px); }
-
     .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
     .product-card {
       background: var(--white); border-radius: 12px; overflow: hidden;
@@ -169,14 +154,9 @@
   </div>
 
   <section class="products-container">
-    <div class="section-header-row">
-      <h2 class="section-title" style="margin-bottom:0;">محصولات آماده</h2>
-      <a href="ai.html" class="btn-ai-section">
-        <i class="fa-solid fa-robot"></i> طراحی با هوش مصنوعی
-      </a>
-    </div>
+    <h2 class="section-title">محصولات</h2>
     <div class="products-grid" id="productsGrid">
-      <div class="empty-state"><i class="fa-solid fa-box-open"></i><p>در حال بارگذاری محصولات...</p></div>
+      <div class="empty-state"><i class="fa-solid fa-box-open"></i><p>در حال بارگذاری...</p></div>
     </div>
   </section>
 
@@ -216,6 +196,25 @@
       </div>
     `;
 
+    const aiCard = `
+      <div class="product-card" onclick="window.location.href='ai.html'" style="border: 2px dashed var(--purple);">
+        <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #f9f0ff, #ede0f7);">
+          <i class="fa-solid fa-robot" style="font-size:48px;color:var(--purple);"></i>
+        </div>
+        <div class="product-info">
+          <div class="product-name">طراحی با هوش مصنوعی</div>
+          <div class="product-meta">
+            <span class="product-category" style="background:var(--purple);color:var(--white);">AI</span>
+            <span class="product-price" style="color:var(--purple);">رایگان <span>امتحان کنید</span></span>
+          </div>
+          <div class="product-like-row">
+            <span class="product-likes-count"><i class="fa-solid fa-wand-magic-sparkles"></i> خلاقیت بی‌نهایت</span>
+            <span style="font-size:10px;color:#a08b73;">ساخته شده با Gemini</span>
+          </div>
+        </div>
+      </div>
+    `;
+
     async function loadProducts() {
       try {
         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getProducts', role: 'visitor', username: '' }) });
@@ -224,20 +223,20 @@
           allProducts = data.data.products.filter(p => p.status !== 'sold');
           renderProducts(allProducts);
         } else {
-          document.getElementById('productsGrid').innerHTML = customOrderCard + '<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>هنوز محصولی ثبت نشده است.</p></div>';
+          document.getElementById('productsGrid').innerHTML = customOrderCard + aiCard + '<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>هنوز محصولی ثبت نشده است.</p></div>';
         }
       } catch(e) {
-        document.getElementById('productsGrid').innerHTML = customOrderCard + '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>خطا در بارگذاری</p></div>';
+        document.getElementById('productsGrid').innerHTML = customOrderCard + aiCard + '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>خطا در بارگذاری</p></div>';
       }
     }
 
     function renderProducts(products) {
       const grid = document.getElementById('productsGrid');
       if (products.length === 0) {
-        grid.innerHTML = customOrderCard + '<div class="no-results"><i class="fa-solid fa-search"></i><p>محصولی با این مشخصات پیدا نشد.</p></div>';
+        grid.innerHTML = customOrderCard + aiCard + '<div class="no-results"><i class="fa-solid fa-search"></i><p>محصولی با این مشخصات پیدا نشد.</p></div>';
         return;
       }
-      grid.innerHTML = customOrderCard + products.map(p => {
+      grid.innerHTML = customOrderCard + aiCard + products.map(p => {
         const hasLiked = localStorage.getItem('qm_liked_' + p.product_id) === 'true';
         return `
           <div class="product-card" onclick="goToProduct('${p.product_id}')">
