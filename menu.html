@@ -18,36 +18,33 @@
     }
     .header {
       background: var(--white); box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-      padding: 16px 20px; text-align: center; position: sticky; top: 0; z-index: 100;
+      padding: 16px 20px; position: sticky; top: 0; z-index: 100;
     }
     .header-inner {
-      display: flex; align-items: center; justify-content: center;
-      gap: 12px; max-width: 600px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; max-width: 1100px; margin: 0 auto;
     }
+    .header-login-btn {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--brown); font-size: 13px; font-weight: 600;
+      text-decoration: none; padding: 8px 14px;
+      border: 1.5px solid var(--gold); border-radius: 10px;
+      transition: all 0.3s ease; white-space: nowrap;
+    }
+    .header-login-btn:hover { background: var(--milk); }
+    .header-login-btn i { font-size: 14px; }
     .header-logo {
-      width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+      width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
       border: 2px solid var(--milk); box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     }
-    .header-title { font-size: 24px; font-weight: 700; color: var(--dark); }
+    .header-title { font-size: 22px; font-weight: 700; color: var(--dark); }
     .header-subtitle { font-size: 11px; color: #a08b73; }
-    .order-section { text-align: center; padding: 20px 20px 10px; }
-    .btn-order {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 30px; background: linear-gradient(145deg, var(--brown), #6d553b);
-      color: var(--white); border: none; border-radius: 12px; font-size: 14px;
-      font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.3s ease;
-      box-shadow: 0 4px 14px rgba(107,83,59,0.2);
-    }
-    .btn-order:hover { background: linear-gradient(145deg, #7d6343, #5e4932); transform: translateY(-2px); }
 
-    /* ========== SEARCH & FILTER ========== */
     .search-filter-bar {
-      max-width: 1100px; margin: 0 auto 8px; padding: 0 16px;
+      max-width: 1100px; margin: 20px auto 8px; padding: 0 16px;
       display: flex; gap: 10px; flex-wrap: wrap;
     }
-    .search-box {
-      flex: 2; min-width: 200px; position: relative;
-    }
+    .search-box { flex: 2; min-width: 200px; position: relative; }
     .search-box input {
       width: 100%; padding: 12px 40px 12px 16px;
       border: 1.5px solid #e5ddd3; border-radius: 12px;
@@ -59,9 +56,7 @@
       position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
       color: #b8a48e; font-size: 14px;
     }
-    .filter-select {
-      flex: 1; min-width: 140px;
-    }
+    .filter-select { flex: 1; min-width: 140px; }
     .filter-select select {
       width: 100%; padding: 12px 16px; border: 1.5px solid #e5ddd3;
       border-radius: 12px; font-size: 13px; color: var(--dark);
@@ -112,9 +107,9 @@
     @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } .product-image { height: 160px; } }
     @media (max-width: 768px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .header-inner { flex-direction: column; gap: 6px; }
-      .header-title { font-size: 20px; }
-      .header-logo { width: 44px; height: 44px; }
+      .header-title { font-size: 18px; }
+      .header-logo { width: 36px; height: 36px; }
+      .header-login-btn { font-size: 11px; padding: 6px 10px; }
       .product-image { height: 140px; }
       .product-info { padding: 10px 12px; }
       .product-name { font-size: 12px; }
@@ -128,21 +123,19 @@
 
   <header class="header">
     <div class="header-inner">
-      <img src="https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg" alt="رسانه هنری قمر" class="header-logo">
-      <div>
-        <div class="header-title">رسانه هنری قمر</div>
-        <div class="header-subtitle">هنر ماندگار، از قمر ماندگارتر</div>
+      <a href="mypage.html" class="header-login-btn">
+        <i class="fa-solid fa-user"></i> صفحه شخصی
+      </a>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg" alt="رسانه هنری قمر" class="header-logo">
+        <div>
+          <div class="header-title">رسانه هنری قمر</div>
+          <div class="header-subtitle">هنر ماندگار، از قمر ماندگارتر</div>
+        </div>
       </div>
     </div>
   </header>
 
-  <section class="order-section">
-    <button class="btn-order" onclick="window.location.href='order.html'">
-      <i class="fa-solid fa-pen-to-square"></i> ثبت سفارش اختصاصی
-    </button>
-  </section>
-
-  <!-- SEARCH & FILTER -->
   <div class="search-filter-bar">
     <div class="search-box">
       <i class="fa-solid fa-magnifying-glass"></i>
@@ -177,7 +170,7 @@
   </footer>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycby1E5_oBz9niqfTufk9SqX1bhXkH_uIc9Eg1-c3sSDprsUTXANfjz2gkWk0SEJrmVLSvQ/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbw8P8cVOL4XTqFvfPhy7pYIJF211v0syTmFYjR41AAvQBUs90QZavQKjzZbQSfF5K4q7Q/exec';
     let allProducts = [];
 
     const categoryLabels = {
@@ -231,17 +224,9 @@
     function filterProducts() {
       const search = document.getElementById('searchInput').value.trim().toLowerCase();
       const filter = document.getElementById('filterSelect').value;
-      
       let filtered = allProducts;
-      
-      if (search) {
-        filtered = filtered.filter(p => p.name.toLowerCase().includes(search));
-      }
-      
-      if (filter !== 'all') {
-        filtered = filtered.filter(p => p.category === filter);
-      }
-      
+      if (search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search));
+      if (filter !== 'all') filtered = filtered.filter(p => p.category === filter);
       renderProducts(filtered);
     }
 
