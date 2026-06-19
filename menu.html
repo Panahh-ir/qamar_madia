@@ -10,7 +10,7 @@
     :root {
       --cream: #fdfbf7; --milk: #f5efe6; --beige: #ede4d8;
       --gold: #c8af93; --brown: #8b6f4e; --dark: #3e2c1c;
-      --text: #5c4a3a; --white: #ffffff; --red: #e74c3c; --green: #27ae60;
+      --text: #5c4a3a; --white: #ffffff; --red: #e74c3c; --green: #27ae60; --purple: #8e44ad;
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -24,15 +24,21 @@
       display: flex; align-items: center; justify-content: space-between;
       gap: 12px; max-width: 1100px; margin: 0 auto;
     }
-    .header-login-btn {
+    .header-btns { display: flex; align-items: center; gap: 8px; }
+    .header-btn {
       display: flex; align-items: center; gap: 6px;
-      color: var(--brown); font-size: 13px; font-weight: 600;
-      text-decoration: none; padding: 8px 14px;
-      border: 1.5px solid var(--gold); border-radius: 10px;
+      font-size: 13px; font-weight: 600; text-decoration: none;
+      padding: 8px 14px; border-radius: 10px;
       transition: all 0.3s ease; white-space: nowrap;
     }
-    .header-login-btn:hover { background: var(--milk); }
-    .header-login-btn i { font-size: 14px; }
+    .btn-ai {
+      color: var(--purple); border: 1.5px solid var(--purple);
+    }
+    .btn-ai:hover { background: #f9f0ff; }
+    .btn-profile {
+      color: var(--brown); border: 1.5px solid var(--gold);
+    }
+    .btn-profile:hover { background: var(--milk); }
     .header-logo {
       width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
       border: 2px solid var(--milk); box-shadow: 0 3px 10px rgba(0,0,0,0.05);
@@ -109,7 +115,7 @@
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .header-title { font-size: 18px; }
       .header-logo { width: 36px; height: 36px; }
-      .header-login-btn { font-size: 11px; padding: 6px 10px; }
+      .header-btn { font-size: 11px; padding: 6px 10px; }
       .product-image { height: 140px; }
       .product-info { padding: 10px 12px; }
       .product-name { font-size: 12px; }
@@ -130,9 +136,10 @@
           <div class="header-subtitle">هنر ماندگار، از قمر ماندگارتر</div>
         </div>
       </div>
-      <a href="mypage.html" class="header-login-btn">
-        <i class="fa-solid fa-user"></i> صفحه شخصی
-      </a>
+      <div class="header-btns">
+        <a href="ai.html" class="header-btn btn-ai"><i class="fa-solid fa-robot"></i> هوش مصنوعی</a>
+        <a href="mypage.html" class="header-btn btn-profile"><i class="fa-solid fa-user"></i> صفحه شخصی</a>
+      </div>
     </div>
   </header>
 
