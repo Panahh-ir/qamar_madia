@@ -529,10 +529,21 @@
       } catch(e) { alert('خطا'); }
     }
 
-    function showModalContent(content) {
+        function showModalContent(content) {
       const overlay = document.createElement('div');
       overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;justify-content:center;align-items:center;padding:20px;';
       overlay.innerHTML = `
         <div style="background:white;border-radius:16px;padding:24px;max-width:500px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
           <p style="color:#5c4a3a;line-height:1.8;font-size:14px;white-space:pre-wrap;word-break:break-word;">${content}</p>
-          <button onclick="this.closest('div').parentElement.remove()" style="ma
+          <button onclick="this.closest('div').parentElement.remove()" style="margin-top:16px;padding:10px 24px;background:#8b6f4e;color:white;border:none;border-radius:8px;cursor:pointer;font-family:inherit;"><i class="fa-solid fa-xmark"></i> بستن</button>
+        </div>`;
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+      document.body.appendChild(overlay);
+    }
+
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+    });
+  </script>
+</body>
+</html>
