@@ -181,13 +181,11 @@
 
     <!-- LOGGED IN -->
     <div id="loggedSection" style="display:none;">
-      <!-- TABS -->
       <div class="tabs">
         <button class="tab active" onclick="switchTab('orders')">سفارشات من</button>
         <button class="tab" onclick="switchTab('purchases')">خریدهای من</button>
       </div>
 
-      <!-- ORDERS -->
       <div class="content-section active" id="ordersContent">
         <div class="section-header">
           <h2><i class="fa-solid fa-clipboard-list"></i> سفارشات</h2>
@@ -198,11 +196,8 @@
         <div id="ordersList"></div>
       </div>
 
-      <!-- PURCHASES -->
       <div class="content-section" id="purchasesContent">
-        <div class="section-header">
-          <h2><i class="fa-solid fa-bag-shopping"></i> خریدها</h2>
-        </div>
+        <div class="section-header"><h2><i class="fa-solid fa-bag-shopping"></i> خریدها</h2></div>
         <div id="purchasesList"></div>
       </div>
     </div>
@@ -240,7 +235,7 @@
   </div>
 
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbw8P8cVOL4XTqFvfPhy7pYIJF211v0syTmFYjR41AAvQBUs90QZavQKjzZbQSfF5K4q7Q/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxgQN_M1UGpU8kTYs4DavSaADygrplQMXXMWaC-I8j5fUmz1wOV-gi5nvbP7MjaoJEWqA/exec';
     let currentCustomer = null;
 
     const workTypeLabels = {
@@ -277,6 +272,7 @@
       } else {
         document.querySelector('#loggedSection .tab:last-child').classList.add('active');
         document.getElementById('purchasesContent').classList.add('active');
+        loadMyPurchases();
       }
     }
 
@@ -344,10 +340,8 @@
       document.querySelector('#loggedSection .tab:last-child').classList.remove('active');
       document.getElementById('purchasesContent').classList.remove('active');
       loadMyOrders();
-      loadMyPurchases();
     }
 
-    // ========== ORDERS ==========
     async function loadMyOrders() {
       const container = document.getElementById('ordersList');
       if (!currentCustomer || !currentCustomer.orders) {
@@ -372,8 +366,13 @@
                 <div class="card-header"><span class="card-id">#${o.order_id}</span><span class="badge ${badgeClass}">${statusText}</span></div>
                 <div class="card-title">${workTypeLabels[o.work_type] || o.work_type || 'نامشخص'}</div>
                 <div class="card-desc">${o.description || '-'}</div>
+                ${o.price ? `<div class="card-desc" style="color:var(--green);font-weight:700;">${Number(o.price).toLocaleString('fa-IR')} تومان</div>` : ''}
                 <div class="card-date">${o.date_submitted || '-'}</div>
-                ${o.file_link ? `<div class="card-download"><a href="${o.file_link}" download><i class="fa-solid fa-download"></i> دانلود فایل</a></div>` : ''}
+                ${o.file_link ? 
+                  (o.payment_status === 'paid' ? 
+                    `<div class="card-download"><a href="${o.file_link}" download><i class="fa-solid fa-download"></i> دانلود فایل</a></div>` : 
+                    `<div class="card-desc" style="color:#f39c12;">فایل پس از پرداخت قابل دانلود است</div>`) 
+                  : ''}
               </div>
             `;
           }).join('');
@@ -381,8 +380,10 @@
       } catch(e) { container.innerHTML = '<p>خطا</p>'; }
     }
 
-    // ========== PURCHASES ==========
     async function loadMyPurchases() {
+      const saved = localStorage.getItem('qm_customer');
+      if (saved) currentCustomer = JSON.parse(saved);
+
       const container = document.getElementById('purchasesList');
       if (!currentCustomer || !currentCustomer.purchases) {
         container.innerHTML = '<div class="no-data"><i class="fa-solid fa-bag-shopping"></i><p>هنوز خریدی انجام نداده‌اید.</p></div>';
@@ -390,69 +391,4 @@
       }
       try {
         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getProducts', role: 'visitor', username: '' }) });
-        const data = await res.json();
-        if (data.result === 'success') {
-          const purchaseItems = currentCustomer.purchases.split(',').map(p => p.trim());
-          const purchases = purchaseItems.map(p => {
-            const [productId, productName, price] = p.split(':');
-            const product = data.data.products.find(pr => pr.product_id === productId);
-            return { productId, productName, price, file_link: product ? product.file_link : null };
-          });
-
-          container.innerHTML = purchases.reverse().map(p => `
-            <div class="card">
-              <div class="card-header"><span class="card-id">${p.productId}</span><span class="badge badge-success">خریداری شده</span></div>
-              <div class="card-title">${p.productName}</div>
-              <div class="card-desc">${Number(p.price).toLocaleString('fa-IR')} تومان</div>
-              ${p.file_link ? `<div class="card-download"><a href="${p.file_link}" download><i class="fa-solid fa-download"></i> دانلود فایل</a></div>` : ''}
-            </div>
-          `).join('');
-        }
-      } catch(e) {}
-    }
-
-    // ========== NEW ORDER ==========
-    function showNewOrder() {
-      document.getElementById('loggedSection').style.display = 'none';
-      document.getElementById('newOrderSection').style.display = 'block';
-      document.getElementById('newOrderError').style.display = 'none';
-      document.getElementById('newOrderSuccess').style.display = 'none';
-    }
-
-    function backToOrders() {
-      document.getElementById('newOrderSection').style.display = 'none';
-      document.getElementById('loggedSection').style.display = 'block';
-      loadMyOrders();
-    }
-
-    async function handleNewOrder(e) {
-      e.preventDefault();
-      const workType = document.getElementById('newWorkType').value;
-      const description = document.getElementById('newDescription').value.trim();
-      const errorDiv = document.getElementById('newOrderError');
-      const successDiv = document.getElementById('newOrderSuccess');
-      if (!workType || !description) return;
-      errorDiv.style.display = 'none'; successDiv.style.display = 'none';
-      try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({
-          action: 'addOrder', customer_name: currentCustomer.name, contact: currentCustomer.contact,
-          work_type: workType, description: description
-        })});
-        const data = await res.json();
-        if (data.result === 'success') {
-          const orderId = data.data.order_id;
-          const updatedOrders = currentCustomer.orders ? currentCustomer.orders + ', ' + orderId : orderId;
-          currentCustomer.orders = updatedOrders;
-          localStorage.setItem('qm_customer', JSON.stringify(currentCustomer));
-          await fetch(API_URL, { method: 'POST', body: JSON.stringify({
-            action: 'updateCustomerOrders', customer_id: currentCustomer.customer_id, orders: updatedOrders
-          })});
-          successDiv.textContent = 'سفارش ثبت شد!'; successDiv.style.display = 'block';
-          document.getElementById('newWorkType').value = ''; document.getElementById('newDescription').value = '';
-          setTimeout(() => backToOrders(), 1500);
-        } else { errorDiv.textContent = data.message; errorDiv.style.display = 'block'; }
-      } catch(e) { errorDiv.textContent = 'خطا'; errorDiv.style.display = 'block'; }
-    }
-  </script>
-</body>
-</html>
+        const data = await res.json(
