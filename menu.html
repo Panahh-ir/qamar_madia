@@ -104,6 +104,21 @@
     .footer-stat small { font-size: 10px; color: #a08b73; }
     .footer-text { font-size: 11px; color: #b8a48e; }
 
+    /* ========== FLOATING SUPPORT ========== */
+    .floating-support {
+      position: fixed; bottom: 24px; left: 24px;
+      width: 56px; height: 56px;
+      background: linear-gradient(145deg, #2196F3, #1976D2);
+      color: #fff; border: none; border-radius: 50%;
+      font-size: 24px; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(33,150,243,0.35);
+      z-index: 999; display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease; text-decoration: none;
+    }
+    .floating-support:hover { transform: scale(1.1); box-shadow: 0 10px 28px rgba(33,150,243,0.5); }
+    .floating-support i { animation: float 2s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
     @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } .product-image { height: 160px; } }
     @media (max-width: 768px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -169,7 +184,11 @@
     <p class="footer-text"><i class="fa-solid fa-star-and-crescent"></i> رسانه هنری قمر — کلیه حقوق محفوظ است</p>
   </footer>
 
-  <script>
+  <a href="support.html" class="floating-support" title="پشتیبانی">
+    <i class="fa-solid fa-headset"></i>
+  </a>
+
+    <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbz4tI_IxdN__qlIQn_Dy1uGakTzZ6lexrT5BMVHyxvvWlLzkjswliMt-1lLvlvhaEgCOg/exec';
     let allProducts = [];
 
@@ -277,28 +296,18 @@
       const likeKey = 'qm_liked_' + productId;
       const hasLiked = localStorage.getItem(likeKey) === 'true';
       if (hasLiked) {
-        localStorage.removeItem(likeKey); button.classList.remove('liked');
-        button.innerHTML = '<i class="fa-regular fa-heart"></i>';
+        localStorage.removeItem(likeKey); button.classList.remove('liked'); button.innerHTML = '<i class="fa-regular fa-heart"></i>';
         try {
           const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: 'remove' }) });
           const d = await res.json();
-          if (d.result === 'success') {
-            const likesEl = button.parentElement.querySelector('.product-likes-count');
-            if (likesEl) likesEl.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes;
-            loadFooterStats();
-          }
+          if (d.result === 'success') { const el = button.parentElement.querySelector('.product-likes-count'); if (el) el.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes; loadFooterStats(); }
         } catch(e) {}
       } else {
-        localStorage.setItem(likeKey, 'true'); button.classList.add('liked');
-        button.innerHTML = '<i class="fa-solid fa-heart"></i>';
+        localStorage.setItem(likeKey, 'true'); button.classList.add('liked'); button.innerHTML = '<i class="fa-solid fa-heart"></i>';
         try {
           const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: 'add' }) });
           const d = await res.json();
-          if (d.result === 'success') {
-            const likesEl = button.parentElement.querySelector('.product-likes-count');
-            if (likesEl) likesEl.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes;
-            loadFooterStats();
-          }
+          if (d.result === 'success') { const el = button.parentElement.querySelector('.product-likes-count'); if (el) el.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes; loadFooterStats(); }
         } catch(e) {}
       }
     }
