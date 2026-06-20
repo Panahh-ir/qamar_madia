@@ -118,77 +118,34 @@
       <button class="tab" onclick="switchTab('pro')"><i class="fa-solid fa-crown"></i> پیشرفته</button>
     </div>
 
-    <!-- FREE TAB -->
     <div id="freeTab">
       <div class="card">
         <h2><i class="fa-solid fa-wand-magic-sparkles"></i> پرامپت‌ساز رایگان</h2>
         <p class="subtitle">گزینه‌ها رو انتخاب کن تا پرامپت انگلیسی دقیق ساخته بشه</p>
 
         <div class="form-row">
-          <div class="form-group">
-            <label><i class="fa-solid fa-palette"></i> نوع طرح</label>
-            <select id="freeType" onchange="updateFreePrompt()">
-              <option value="">انتخاب کنید...</option>
-              <option value="Islamic religious poster">پوستر مذهبی اسلامی</option>
-              <option value="Islamic calligraphy typography">تایپوگرافی اسلامی</option>
-              <option value="Islamic architecture scene">معماری اسلامی</option>
-              <option value="Eid or Ramadan poster">پوستر عید / رمضان</option>
-              <option value="Spiritual Islamic art">هنر اسلامی روحانی</option>
-              <option value="Mosque interior design">طراحی داخلی مسجد</option>
-              <option value="Islamic geometric pattern art">هنر هندسه اسلامی</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label><i class="fa-solid fa-droplet"></i> رنگ‌بندی</label>
-            <input type="text" id="freeColors" placeholder="مثلاً: black and gold..." oninput="updateFreePrompt()">
-          </div>
+          <div class="form-group"><label><i class="fa-solid fa-palette"></i> نوع طرح</label><select id="freeType" onchange="updateFreePrompt()"><option value="">انتخاب کنید...</option><option value="Islamic religious poster">پوستر مذهبی اسلامی</option><option value="Islamic calligraphy typography">تایپوگرافی اسلامی</option><option value="Islamic architecture scene">معماری اسلامی</option><option value="Eid or Ramadan poster">پوستر عید / رمضان</option><option value="Spiritual Islamic art">هنر اسلامی روحانی</option><option value="Mosque interior design">طراحی داخلی مسجد</option><option value="Islamic geometric pattern art">هنر هندسه اسلامی</option></select></div>
+          <div class="form-group"><label><i class="fa-solid fa-droplet"></i> رنگ‌بندی</label><input type="text" id="freeColors" placeholder="مثلاً: black and gold..." oninput="updateFreePrompt()"></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label><i class="fa-solid fa-text-height"></i> متن یا کلمه خاص</label>
-            <input type="text" id="freeText" placeholder="مثلاً: Ya Hussein, Allah..." oninput="updateFreePrompt()">
-          </div>
-          <div class="form-group">
-            <label><i class="fa-solid fa-paintbrush"></i> سبک هنری</label>
-            <select id="freeStyle" onchange="updateFreePrompt()">
-              <option value="">انتخاب کنید...</option>
-              <option value="Persian miniature style">مینیاتور ایرانی</option>
-              <option value="Ottoman calligraphy style">خط عثمانی</option>
-              <option value="modern digital art">هنر دیجیتال مدرن</option>
-              <option value="traditional arabesque">اسلیمی سنتی</option>
-              <option value="watercolor painting">آبرنگ</option>
-              <option value="3D render">رندر سه‌بعدی</option>
-            </select>
-          </div>
+          <div class="form-group"><label><i class="fa-solid fa-text-height"></i> متن یا کلمه خاص</label><input type="text" id="freeText" placeholder="مثلاً: Ya Hussein, Allah..." oninput="updateFreePrompt()"></div>
+          <div class="form-group"><label><i class="fa-solid fa-paintbrush"></i> سبک هنری</label><select id="freeStyle" onchange="updateFreePrompt()"><option value="">انتخاب کنید...</option><option value="Persian miniature style">مینیاتور ایرانی</option><option value="Ottoman calligraphy style">خط عثمانی</option><option value="modern digital art">هنر دیجیتال مدرن</option><option value="traditional arabesque">اسلیمی سنتی</option><option value="watercolor painting">آبرنگ</option><option value="3D render">رندر سه‌بعدی</option></select></div>
         </div>
-        <div class="form-group full">
-          <label><i class="fa-solid fa-plus-circle"></i> جزئیات اضافه</label>
-          <input type="text" id="freeExtra" placeholder="مثلاً: crescent moon, candles, dome..." oninput="updateFreePrompt()">
-        </div>
+        <div class="form-group full"><label><i class="fa-solid fa-plus-circle"></i> جزئیات اضافه</label><input type="text" id="freeExtra" placeholder="مثلاً: crescent moon, candles, dome..." oninput="updateFreePrompt()"></div>
 
-        <div class="prompt-preview" id="freePromptPreview">
-          <small>پرامپت شما اینجا نمایش داده می‌شود...</small>
-        </div>
+        <div class="prompt-preview" id="freePromptPreview"><small>پرامپت شما اینجا نمایش داده می‌شود...</small></div>
 
-        <button class="btn btn-purple" onclick="generateFreeImage()" id="freeGenBtn">
-          <i class="fa-solid fa-robot"></i> ساخت تصویر رایگان
-        </button>
+        <button class="btn btn-purple" onclick="generateFreeImage()" id="freeGenBtn"><i class="fa-solid fa-robot"></i> ساخت تصویر رایگان</button>
       </div>
-      <div class="card" id="freeResultCard" style="display:none;">
-        <h2><i class="fa-solid fa-image"></i> نتیجه</h2>
-        <div class="result" id="freeResult"></div>
-      </div>
+      <div class="card" id="freeResultCard" style="display:none;"><h2><i class="fa-solid fa-image"></i> نتیجه</h2><div class="result" id="freeResult"></div></div>
     </div>
 
-    <!-- PRO TAB -->
     <div id="proTab" style="display:none;">
       <div class="card" id="proLoginPrompt">
         <div class="login-prompt">
           <i class="fa-solid fa-lock" style="font-size:48px;color:#b8a48e;"></i>
           <p>برای استفاده از بخش پیشرفته باید وارد حساب کاربری خود شوید</p>
-          <button class="btn btn-purple" onclick="window.location.href='mypage.html'">
-            <i class="fa-solid fa-right-to-bracket"></i> ورود / ثبت‌نام
-          </button>
+          <button class="btn btn-purple" onclick="window.location.href='mypage.html'"><i class="fa-solid fa-right-to-bracket"></i> ورود / ثبت‌نام</button>
         </div>
       </div>
 
@@ -200,12 +157,8 @@
 
         <div id="noSubscription" style="display:none;">
           <p class="subtitle" style="text-align:center;">برای استفاده از مدل پیشرفته، اشتراک تهیه کنید</p>
-          <button class="btn btn-gold" onclick="buySubscription()">
-            <i class="fa-solid fa-crown"></i> خرید اشتراک ۱ ماهه (۹۹,۰۰۰ تومان)
-          </button>
-          <p style="text-align:center;margin-top:8px;font-size:11px;color:#a08b73;">
-            <i class="fa-solid fa-check"></i> ۳ تصویر در روز با کیفیت بالا
-          </p>
+          <button class="btn btn-gold" onclick="buySubscription()"><i class="fa-solid fa-crown"></i> خرید اشتراک ۱ ماهه (۹۹,۰۰۰ تومان)</button>
+          <p style="text-align:center;margin-top:8px;font-size:11px;color:#a08b73;"><i class="fa-solid fa-check"></i> ۳ تصویر در روز با کیفیت بالا</p>
         </div>
 
         <div id="proGenerator" style="display:none;">
@@ -213,61 +166,22 @@
           <p class="subtitle">کیفیت بالاتر، جزئیات بیشتر</p>
 
           <div class="form-row">
-            <div class="form-group">
-              <label><i class="fa-solid fa-palette"></i> نوع طرح</label>
-              <select id="proType" onchange="updateProPrompt()">
-                <option value="">انتخاب کنید...</option>
-                <option value="Islamic religious poster">پوستر مذهبی اسلامی</option>
-                <option value="Islamic calligraphy typography">تایپوگرافی اسلامی</option>
-                <option value="Islamic architecture scene">معماری اسلامی</option>
-                <option value="Eid or Ramadan poster">پوستر عید / رمضان</option>
-                <option value="Spiritual Islamic art">هنر اسلامی روحانی</option>
-                <option value="Mosque interior design">طراحی داخلی مسجد</option>
-                <option value="Islamic geometric pattern art">هنر هندسه اسلامی</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label><i class="fa-solid fa-droplet"></i> رنگ‌بندی</label>
-              <input type="text" id="proColors" placeholder="مثلاً: black and gold..." oninput="updateProPrompt()">
-            </div>
+            <div class="form-group"><label><i class="fa-solid fa-palette"></i> نوع طرح</label><select id="proType" onchange="updateProPrompt()"><option value="">انتخاب کنید...</option><option value="Islamic religious poster">پوستر مذهبی اسلامی</option><option value="Islamic calligraphy typography">تایپوگرافی اسلامی</option><option value="Islamic architecture scene">معماری اسلامی</option><option value="Eid or Ramadan poster">پوستر عید / رمضان</option><option value="Spiritual Islamic art">هنر اسلامی روحانی</option><option value="Mosque interior design">طراحی داخلی مسجد</option><option value="Islamic geometric pattern art">هنر هندسه اسلامی</option></select></div>
+            <div class="form-group"><label><i class="fa-solid fa-droplet"></i> رنگ‌بندی</label><input type="text" id="proColors" placeholder="مثلاً: black and gold..." oninput="updateProPrompt()"></div>
           </div>
           <div class="form-row">
-            <div class="form-group">
-              <label><i class="fa-solid fa-text-height"></i> متن یا کلمه خاص</label>
-              <input type="text" id="proText" placeholder="مثلاً: Ya Hussein, Allah..." oninput="updateProPrompt()">
-            </div>
-            <div class="form-group">
-              <label><i class="fa-solid fa-paintbrush"></i> سبک هنری</label>
-              <select id="proStyle" onchange="updateProPrompt()">
-                <option value="">انتخاب کنید...</option>
-                <option value="Persian miniature style">مینیاتور ایرانی</option>
-                <option value="Ottoman calligraphy style">خط عثمانی</option>
-                <option value="modern digital art">هنر دیجیتال مدرن</option>
-                <option value="traditional arabesque">اسلیمی سنتی</option>
-                <option value="watercolor painting">آبرنگ</option>
-                <option value="3D render">رندر سه‌بعدی</option>
-              </select>
-            </div>
+            <div class="form-group"><label><i class="fa-solid fa-text-height"></i> متن یا کلمه خاص</label><input type="text" id="proText" placeholder="مثلاً: Ya Hussein, Allah..." oninput="updateProPrompt()"></div>
+            <div class="form-group"><label><i class="fa-solid fa-paintbrush"></i> سبک هنری</label><select id="proStyle" onchange="updateProPrompt()"><option value="">انتخاب کنید...</option><option value="Persian miniature style">مینیاتور ایرانی</option><option value="Ottoman calligraphy style">خط عثمانی</option><option value="modern digital art">هنر دیجیتال مدرن</option><option value="traditional arabesque">اسلیمی سنتی</option><option value="watercolor painting">آبرنگ</option><option value="3D render">رندر سه‌بعدی</option></select></div>
           </div>
-          <div class="form-group full">
-            <label><i class="fa-solid fa-plus-circle"></i> جزئیات اضافه</label>
-            <input type="text" id="proExtra" placeholder="مثلاً: crescent moon, candles, dome..." oninput="updateProPrompt()">
-          </div>
+          <div class="form-group full"><label><i class="fa-solid fa-plus-circle"></i> جزئیات اضافه</label><input type="text" id="proExtra" placeholder="مثلاً: crescent moon, candles, dome..." oninput="updateProPrompt()"></div>
 
-          <div class="prompt-preview" id="proPromptPreview">
-            <small>پرامپت پیشرفته شما...</small>
-          </div>
+          <div class="prompt-preview" id="proPromptPreview"><small>پرامپت پیشرفته شما...</small></div>
 
-          <button class="btn btn-gold" onclick="generateProImage()" id="proGenBtn">
-            <i class="fa-solid fa-crown"></i> ساخت تصویر پیشرفته
-          </button>
+          <button class="btn btn-gold" onclick="generateProImage()" id="proGenBtn"><i class="fa-solid fa-crown"></i> ساخت تصویر پیشرفته</button>
         </div>
       </div>
 
-      <div class="card" id="proResultCard" style="display:none;">
-        <h2><i class="fa-solid fa-image"></i> نتیجه پیشرفته</h2>
-        <div class="result" id="proResult"></div>
-      </div>
+      <div class="card" id="proResultCard" style="display:none;"><h2><i class="fa-solid fa-image"></i> نتیجه پیشرفته</h2><div class="result" id="proResult"></div></div>
     </div>
 
     <p class="tips"><i class="fa-solid fa-lightbulb"></i> نکته: پرامپت انگلیسی دقیق‌تر = نتیجه بهتر</p>
@@ -280,10 +194,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       const saved = localStorage.getItem('qm_customer');
       if (saved) {
-        try {
-          currentCustomer = JSON.parse(saved);
-          checkProAccess();
-        } catch(e) {}
+        try { currentCustomer = JSON.parse(saved); checkProAccess(); } catch(e) {}
       }
       updateFreePrompt();
     });
@@ -302,7 +213,6 @@
       }
     }
 
-    // ========== FREE ==========
     function updateFreePrompt() {
       const parts = [];
       const type = document.getElementById('freeType').value;
@@ -310,163 +220,119 @@
       const text = document.getElementById('freeText').value.trim();
       const style = document.getElementById('freeStyle').value;
       const extra = document.getElementById('freeExtra').value.trim();
-      
       if (type) parts.push(type);
       if (text) parts.push('with "' + text + '" in golden Arabic calligraphy');
       if (colors) parts.push(colors + ' color scheme');
       if (style) parts.push(style);
       if (extra) parts.push('featuring ' + extra);
       parts.push('high quality, detailed');
-      
-      const prompt = parts.join(', ');
-      const preview = document.getElementById('freePromptPreview');
-      preview.innerHTML = parts.length > 1 ? '<small style="color:#8e44ad;">پرامپت:</small><br>' + prompt : '<small>لطفاً حداقل "نوع طرح" را انتخاب کنید...</small>';
+      const p = parts.join(', ');
+      document.getElementById('freePromptPreview').innerHTML = parts.length > 1 ? '<small style="color:#8e44ad;">پرامپت:</small><br>' + p : '<small>لطفاً حداقل "نوع طرح" را انتخاب کنید...</small>';
     }
 
     async function generateFreeImage() {
       const type = document.getElementById('freeType').value;
       if (!type) { alert('لطفاً نوع طرح را انتخاب کنید.'); return; }
-      
       const parts = [];
       if (type) parts.push(type);
-      const text = document.getElementById('freeText').value.trim();
-      if (text) parts.push('with "' + text + '" in golden Arabic calligraphy');
-      const colors = document.getElementById('freeColors').value.trim();
-      if (colors) parts.push(colors + ' color scheme');
-      const style = document.getElementById('freeStyle').value;
-      if (style) parts.push(style);
-      const extra = document.getElementById('freeExtra').value.trim();
-      if (extra) parts.push('featuring ' + extra);
+      const t = document.getElementById('freeText').value.trim();
+      if (t) parts.push('with "' + t + '" in golden Arabic calligraphy');
+      const c = document.getElementById('freeColors').value.trim();
+      if (c) parts.push(c + ' color scheme');
+      const s = document.getElementById('freeStyle').value;
+      if (s) parts.push(s);
+      const e = document.getElementById('freeExtra').value.trim();
+      if (e) parts.push('featuring ' + e);
       parts.push('high quality, detailed');
-      
       const prompt = parts.join(', ');
       const btn = document.getElementById('freeGenBtn');
-      const resultCard = document.getElementById('freeResultCard');
-      const result = document.getElementById('freeResult');
-      
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ساخت...';
-      resultCard.style.display = 'block';
-      result.innerHTML = '<p style="text-align:center;color:#a08b73;">در حال ساخت تصویر...</p>';
-      
-      const imageUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(prompt) + '?width=512&height=512&nologo=true&seed=' + Math.floor(Math.random() * 10000);
-      
+      const rc = document.getElementById('freeResultCard');
+      const r = document.getElementById('freeResult');
+      btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ساخت...';
+      rc.style.display = 'block'; r.innerHTML = '<p style="text-align:center;color:#a08b73;">در حال ساخت تصویر...</p>';
+      const imgUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(prompt) + '?width=512&height=512&nologo=true&seed=' + Math.floor(Math.random()*10000);
       const img = new Image();
       img.onload = function() {
-        result.innerHTML = `<img src="${imageUrl}" alt="طرح"><a href="${imageUrl}" download class="download-btn"><i class="fa-solid fa-download"></i> دانلود</a>`;
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ساخت دوباره';
-        
-        if (currentCustomer) {
-          fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'saveFreeImage', customer_id: currentCustomer.customer_id, image_url: imageUrl }) }).catch(() => {});
-        }
+        r.innerHTML = `<img src="${imgUrl}" alt="طرح"><a href="${imgUrl}" download class="download-btn"><i class="fa-solid fa-download"></i> دانلود</a>`;
+        btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ساخت دوباره';
+        if (currentCustomer) fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'saveFreeImage', customer_id: currentCustomer.customer_id, image_url: imgUrl }) }).catch(()=>{});
       };
-      img.onerror = function() {
-        result.innerHTML = '<p style="color:red;text-align:center;">خطا در ساخت تصویر.</p>';
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-robot"></i> ساخت تصویر رایگان';
-      };
-      img.src = imageUrl;
+      img.onerror = function() { r.innerHTML = '<p style="color:red;text-align:center;">خطا در ساخت تصویر.</p>'; btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-robot"></i> ساخت تصویر رایگان'; };
+      img.src = imgUrl;
     }
 
-    // ========== PRO ==========
     async function checkProAccess() {
-      if (!currentCustomer) {
-        document.getElementById('proLoginPrompt').style.display = 'block';
-        document.getElementById('proContent').style.display = 'none';
-        return;
-      }
-
+      if (!currentCustomer) { document.getElementById('proLoginPrompt').style.display='block'; document.getElementById('proContent').style.display='none'; return; }
       try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'checkSubscription', customer_id: currentCustomer.customer_id }) });
+        const res = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'checkSubscription', customer_id: currentCustomer.customer_id }) });
         const data = await res.json();
         if (data.result === 'success') {
-          document.getElementById('proLoginPrompt').style.display = 'none';
-          document.getElementById('proContent').style.display = 'block';
-          
+          currentCustomer.subscription_status = data.data.subscription_status;
+          currentCustomer.subscription_expiry = data.data.subscription_expiry;
+          currentCustomer.remaining_today = data.data.remaining_today;
+          localStorage.setItem('qm_customer', JSON.stringify(currentCustomer));
+          document.getElementById('proLoginPrompt').style.display='none';
+          document.getElementById('proContent').style.display='block';
           const sub = data.data;
-          document.getElementById('subStatus').textContent = sub.subscription_status === 'vip' ? 'VIP (نامحدود)' : sub.subscription_status === 'active' ? 'فعال تا ' + sub.subscription_expiry : 'غیرفعال';
-          document.getElementById('subRemaining').textContent = sub.subscription_status === 'vip' ? '∞' : sub.remaining_today;
-
-          if (sub.subscription_status === 'active' || sub.subscription_status === 'vip') {
-            document.getElementById('noSubscription').style.display = 'none';
-            document.getElementById('proGenerator').style.display = 'block';
+          document.getElementById('subStatus').textContent = sub.subscription_status==='vip' ? 'VIP (نامحدود)' : sub.subscription_status==='active' ? 'فعال تا '+sub.subscription_expiry : 'غیرفعال';
+          document.getElementById('subRemaining').textContent = sub.subscription_status==='vip' ? '∞' : sub.remaining_today;
+          if (sub.subscription_status==='active'||sub.subscription_status==='vip') {
+            document.getElementById('noSubscription').style.display='none';
+            document.getElementById('proGenerator').style.display='block';
             updateProPrompt();
-          } else {
-            document.getElementById('noSubscription').style.display = 'block';
-            document.getElementById('proGenerator').style.display = 'none';
-          }
+          } else { document.getElementById('noSubscription').style.display='block'; document.getElementById('proGenerator').style.display='none'; }
         }
       } catch(e) {}
     }
 
     function updateProPrompt() {
       const parts = [];
-      const type = document.getElementById('proType').value;
-      const colors = document.getElementById('proColors').value.trim();
-      const text = document.getElementById('proText').value.trim();
-      const style = document.getElementById('proStyle').value;
-      const extra = document.getElementById('proExtra').value.trim();
-      
-      if (type) parts.push(type);
-      if (text) parts.push('with "' + text + '" in golden Arabic calligraphy');
-      if (colors) parts.push(colors + ' color scheme');
-      if (style) parts.push(style);
-      if (extra) parts.push('featuring ' + extra);
+      const t = document.getElementById('proType').value;
+      const c = document.getElementById('proColors').value.trim();
+      const x = document.getElementById('proText').value.trim();
+      const s = document.getElementById('proStyle').value;
+      const e = document.getElementById('proExtra').value.trim();
+      if (t) parts.push(t);
+      if (x) parts.push('with "'+x+'" in golden Arabic calligraphy');
+      if (c) parts.push(c+' color scheme');
+      if (s) parts.push(s);
+      if (e) parts.push('featuring '+e);
       parts.push('ultra high quality, 8K, professional, intricate details');
-      
-      const prompt = parts.join(', ');
-      document.getElementById('proPromptPreview').innerHTML = parts.length > 1 ? '<small style="color:#f39c12;">پرامپت پیشرفته:</small><br>' + prompt : '<small>پرامپت پیشرفته شما...</small>';
+      document.getElementById('proPromptPreview').innerHTML = parts.length>1 ? '<small style="color:#f39c12;">پرامپت پیشرفته:</small><br>'+parts.join(', ') : '<small>پرامپت پیشرفته شما...</small>';
     }
 
     async function generateProImage() {
       const type = document.getElementById('proType').value;
       if (!type) { alert('لطفاً نوع طرح را انتخاب کنید.'); return; }
       if (!currentCustomer) { alert('لطفاً وارد شوید.'); return; }
-      
       const parts = [];
       if (type) parts.push(type);
-      const text = document.getElementById('proText').value.trim();
-      if (text) parts.push('with "' + text + '" in golden Arabic calligraphy');
-      const colors = document.getElementById('proColors').value.trim();
-      if (colors) parts.push(colors + ' color scheme');
-      const style = document.getElementById('proStyle').value;
-      if (style) parts.push(style);
-      const extra = document.getElementById('proExtra').value.trim();
-      if (extra) parts.push('featuring ' + extra);
+      const x = document.getElementById('proText').value.trim();
+      if (x) parts.push('with "'+x+'" in golden Arabic calligraphy');
+      const c = document.getElementById('proColors').value.trim();
+      if (c) parts.push(c+' color scheme');
+      const s = document.getElementById('proStyle').value;
+      if (s) parts.push(s);
+      const e = document.getElementById('proExtra').value.trim();
+      if (e) parts.push('featuring '+e);
       parts.push('ultra high quality, 8K, professional, intricate details');
-      
       const prompt = parts.join(', ');
       const btn = document.getElementById('proGenBtn');
-      const resultCard = document.getElementById('proResultCard');
-      const result = document.getElementById('proResult');
-      
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ساخت...';
-      resultCard.style.display = 'block';
-      result.innerHTML = '<p style="text-align:center;color:#a08b73;">در حال ساخت تصویر پیشرفته...</p>';
-      
-      const imageUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(prompt) + '?width=1024&height=1024&nologo=true&seed=' + Math.floor(Math.random() * 10000);
-      
+      const rc = document.getElementById('proResultCard');
+      const r = document.getElementById('proResult');
+      btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ساخت...';
+      rc.style.display = 'block'; r.innerHTML = '<p style="text-align:center;color:#a08b73;">در حال ساخت تصویر پیشرفته...</p>';
+      const imgUrl = 'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=1024&height=1024&nologo=true&seed='+Math.floor(Math.random()*10000);
       const img = new Image();
       img.onload = async function() {
-        result.innerHTML = `<img src="${imageUrl}" alt="طرح"><a href="${imageUrl}" download class="download-btn"><i class="fa-solid fa-download"></i> دانلود</a>`;
-        
-        const saveRes = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'saveProImage', customer_id: currentCustomer.customer_id, image_url: imageUrl }) });
-        const saveData = await saveRes.json();
-        if (saveData.result === 'success') {
-          document.getElementById('subRemaining').textContent = saveData.data.remaining;
-        }
-        
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ساخت دوباره';
+        r.innerHTML = `<img src="${imgUrl}" alt="طرح"><a href="${imgUrl}" download class="download-btn"><i class="fa-solid fa-download"></i> دانلود</a>`;
+        const sRes = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'saveProImage', customer_id: currentCustomer.customer_id, image_url: imgUrl }) });
+        const sData = await sRes.json();
+        if (sData.result==='success') { document.getElementById('subRemaining').textContent = sData.data.remaining; }
+        btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ساخت دوباره';
       };
-      img.onerror = function() {
-        result.innerHTML = '<p style="color:red;text-align:center;">خطا در ساخت تصویر.</p>';
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-crown"></i> ساخت تصویر پیشرفته';
-      };
-      img.src = imageUrl;
+      img.onerror = function() { r.innerHTML = '<p style="color:red;text-align:center;">خطا در ساخت تصویر.</p>'; btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-crown"></i> ساخت تصویر پیشرفته'; };
+      img.src = imgUrl;
     }
 
     function buySubscription() {
