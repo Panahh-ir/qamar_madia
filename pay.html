@@ -47,6 +47,7 @@
     .btn-primary:disabled { background: #c4b6a6; cursor: not-allowed; }
     .btn-green { background: linear-gradient(145deg, #27ae60, #219a52); color: var(--white); }
     .btn-green:hover { background: linear-gradient(145deg, #219a52, #1e8449); }
+    .btn-gold { background: linear-gradient(145deg, #f39c12, #e67e22); color: var(--white); }
     .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--brown); }
 
     .product-preview { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 20px; display: none; }
@@ -96,7 +97,7 @@
     </div>
 
     <div class="order-preview" id="orderPreview">
-      <h3><i class="fa-solid fa-clipboard-list"></i> پرداخت سفارش</h3>
+      <h3 id="orderTitle"></h3>
       <p id="orderType"></p>
       <p id="orderDesc" style="font-size:12px;color:#a08b73;"></p>
       <div class="price" id="orderPrice"></div>
@@ -139,7 +140,7 @@
         <h2><i class="fa-solid fa-check-circle"></i> تایید پرداخت</h2>
         <p class="subtitle" id="confirmUserName"></p>
         <p style="margin-bottom:16px;color:#a08b73;font-size:13px;" id="confirmText">با کلیک روی دکمه زیر پرداخت نهایی می‌شود</p>
-        <button class="btn btn-green" onclick="goToPayment()"><i class="fa-solid fa-credit-card"></i> <span id="confirmBtnText">پرداخت</span></button>
+        <button class="btn btn-green" id="confirmBtn" onclick="goToPayment()"><i class="fa-solid fa-credit-card"></i> <span id="confirmBtnText">پرداخت</span></button>
         <button class="btn btn-outline" style="margin-top:8px;" onclick="logoutPay()"><i class="fa-solid fa-right-from-bracket"></i> خروج</button>
       </div>
     </div>
@@ -155,15 +156,39 @@
   </div>
 
     <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbz4tI_IxdN__qlIQn_Dy1uGakTzZ6lexrT5BMVHyxvvWlLzkjswliMt-1lLvlvhaEgCOg/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbz-riI79-9FmZrqzE8q4nwi7MChAmLqtNkjfNNw-N03H2s9yaPHf4E0E8r-ew4RTrmmNg/exec';
     let currentCustomer = null;
     let selectedProduct = null;
     let isOrderPayment = false;
+    let isSubscription = false;
     let orderData = null;
 
     const categoryLabels = { poster: 'پوستر', typography: 'تایپوگرافی', profile: 'پروفایل', logo: 'لوگو', other: 'سایر' };
 
     window.addEventListener('DOMContentLoaded', async () => {
+      // Check subscription
+      const subscription = localStorage.getItem('qm_buy_subscription');
+      if (subscription === 'ai_pro') {
+        isSubscription = true;
+        document.getElementById('productPreview').style.display = 'none';
+        document.getElementById('orderPreview').style.display = 'block';
+        document.getElementById('orderTitle').innerHTML = '<i class="fa-solid fa-crown" style="color:#f39c12;"></i> خرید اشتراک هوش مصنوعی';
+        document.getElementById('orderType').textContent = 'اشتراک ۱ ماهه پیشرفته';
+        document.getElementById('orderDesc').textContent = '۳ تصویر در روز با کیفیت بالا';
+        document.getElementById('orderPrice').textContent = '۹۹,۰۰۰ تومان';
+        document.getElementById('orderPrice').style.color = '#f39c12';
+        document.getElementById('backBtn').href = 'ai.html';
+        document.getElementById('confirmBtnText').textContent = 'پرداخت اشتراک';
+        document.getElementById('confirmText').textContent = 'با پرداخت این مبلغ، اشتراک ۱ ماهه شما فعال می‌شود';
+        document.getElementById('confirmBtn').className = 'btn btn-gold';
+        document.getElementById('successBackBtn').href = 'ai.html';
+        document.getElementById('successBackBtn').innerHTML = '<i class="fa-solid fa-arrow-right"></i> بازگشت به هوش مصنوعی';
+        const saved = localStorage.getItem('qm_customer');
+        if (saved) { try { currentCustomer = JSON.parse(saved); showConfirm(); } catch(e) {} }
+        return;
+      }
+
+      // Check order payment
       const orderId = localStorage.getItem('qm_pay_order_id');
       if (orderId) {
         isOrderPayment = true;
@@ -174,6 +199,7 @@
           desc: localStorage.getItem('qm_pay_order_desc')
         };
         document.getElementById('orderPreview').style.display = 'block';
+        document.getElementById('orderTitle').innerHTML = '<i class="fa-solid fa-clipboard-list"></i> پرداخت سفارش';
         document.getElementById('orderType').textContent = 'نوع: ' + orderData.type;
         document.getElementById('orderDesc').textContent = orderData.desc ? orderData.desc.substring(0, 80) + '...' : '';
         document.getElementById('orderPrice').textContent = Number(orderData.price).toLocaleString('fa-IR') + ' تومان';
@@ -187,6 +213,7 @@
         return;
       }
 
+      // Product purchase
       const productId = localStorage.getItem('qm_buy_product');
       document.getElementById('backBtn').href = 'menu.html';
       document.getElementById('successBackBtn').href = 'menu.html';
@@ -230,12 +257,9 @@
 
     async function handleLogin(e) {
       e.preventDefault();
-      const u = document.getElementById('loginUsername').value.trim();
-      const p = document.getElementById('loginPassword').value;
-      const err = document.getElementById('loginError');
-      const btn = document.getElementById('loginBtn');
-      err.style.display = 'none'; btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ورود...';
+      const u = document.getElementById('loginUsername').value.trim(), p = document.getElementById('loginPassword').value;
+      const err = document.getElementById('loginError'), btn = document.getElementById('loginBtn');
+      err.style.display = 'none'; btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ورود...';
       try {
         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'customerLogin', username: u, password: p }) });
         const d = await res.json();
@@ -247,15 +271,10 @@
 
     async function handleRegister(e) {
       e.preventDefault();
-      const n = document.getElementById('regName').value.trim();
-      const c = document.getElementById('regContact').value.trim();
-      const u = document.getElementById('regUsername').value.trim();
-      const p = document.getElementById('regPassword').value;
-      const err = document.getElementById('regError');
-      const ok = document.getElementById('regSuccess');
-      const btn = document.getElementById('regBtn');
-      err.style.display = 'none'; ok.style.display = 'none'; btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ثبت‌نام...';
+      const n = document.getElementById('regName').value.trim(), c = document.getElementById('regContact').value.trim();
+      const u = document.getElementById('regUsername').value.trim(), p = document.getElementById('regPassword').value;
+      const err = document.getElementById('regError'), ok = document.getElementById('regSuccess'), btn = document.getElementById('regBtn');
+      err.style.display = 'none'; ok.style.display = 'none'; btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ثبت‌نام...';
       try {
         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'customerRegister', username: u, password: p, name: n, contact: c }) });
         const d = await res.json();
@@ -284,34 +303,56 @@
     }
 
     async function goToPayment() {
-      const btn = document.querySelector('#confirmSection .btn-green');
+      const btn = document.querySelector('#confirmSection .btn-green, #confirmSection .btn-gold');
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال پرداخت...';
 
       try {
+        // Subscription
+        if (isSubscription) {
+          const today = new Date();
+          const expiry = new Date(today.setDate(today.getDate() + 30)).toLocaleDateString('fa-IR');
+          await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'activateSubscription', customer_id: currentCustomer.customer_id, subscription_expiry: expiry }) });
+          currentCustomer.subscription_status = 'active';
+          currentCustomer.subscription_expiry = expiry;
+          currentCustomer.remaining_today = 3;
+          localStorage.setItem('qm_customer', JSON.stringify(currentCustomer));
+          document.getElementById('confirmSection').style.display = 'none';
+          document.getElementById('successBox').style.display = 'block';
+          document.getElementById('successTitle').textContent = 'اشتراک فعال شد!';
+          document.getElementById('successText').innerHTML = 'اشتراک ۱ ماهه هوش مصنوعی با موفقیت فعال شد!<br>اعتبار تا: <strong>' + expiry + '</strong><br>۳ تصویر در روز';
+          document.getElementById('downloadBtnContainer').innerHTML = '';
+          localStorage.removeItem('qm_buy_subscription');
+          return;
+        }
+
+        // Order payment
         if (isOrderPayment) {
           await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'updateOrderStatus', order_id: orderData.order_id, status: 'paid', payment_status: 'paid', price: orderData.price }) });
           document.getElementById('confirmSection').style.display = 'none';
           document.getElementById('successBox').style.display = 'block';
           document.getElementById('successTitle').textContent = 'پرداخت موفق!';
-          document.getElementById('successText').textContent = 'پرداخت سفارش با موفقیت انجام شد! فایل پس از آماده‌سازی توسط ادمین قابل دانلود خواهد بود.';
+          document.getElementById('successText').textContent = 'پرداخت سفارش با موفقیت انجام شد! فایل پس از آماده‌سازی قابل دانلود خواهد بود.';
           document.getElementById('downloadBtnContainer').innerHTML = '';
           localStorage.removeItem('qm_pay_order_id'); localStorage.removeItem('qm_pay_order_price');
           localStorage.removeItem('qm_pay_order_type'); localStorage.removeItem('qm_pay_order_desc');
-        } else {
-          await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'addPurchase', customer_id: currentCustomer.customer_id, product_id: selectedProduct.product_id, product_name: selectedProduct.name, price: selectedProduct.price, file_link: selectedProduct.file_link }) });
-          const np = selectedProduct.product_id + ':' + selectedProduct.name + ':' + selectedProduct.price;
-          currentCustomer.purchases = currentCustomer.purchases ? currentCustomer.purchases + ', ' + np : np;
-          localStorage.setItem('qm_customer', JSON.stringify(currentCustomer));
-          document.getElementById('confirmSection').style.display = 'none';
-          document.getElementById('successBox').style.display = 'block';
-          document.getElementById('successTitle').textContent = 'خرید موفق!';
-          document.getElementById('successText').innerHTML = 'محصول: <strong>' + selectedProduct.name + '</strong><br>مبلغ: <strong>' + Number(selectedProduct.price).toLocaleString('fa-IR') + ' تومان</strong>';
-          if (selectedProduct.file_link) {
-            document.getElementById('downloadBtnContainer').innerHTML = '<a href="'+selectedProduct.file_link+'" download class="btn btn-green" style="display:inline-flex;width:auto;padding:12px 28px;text-decoration:none;"><i class="fa-solid fa-download"></i> دانلود فایل</a>';
-          }
-          localStorage.removeItem('qm_buy_product'); localStorage.removeItem('qm_buy_product_name');
+          return;
         }
+
+        // Product purchase
+        await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'addPurchase', customer_id: currentCustomer.customer_id, product_id: selectedProduct.product_id, product_name: selectedProduct.name, price: selectedProduct.price, file_link: selectedProduct.file_link }) });
+        const np = selectedProduct.product_id + ':' + selectedProduct.name + ':' + selectedProduct.price;
+        currentCustomer.purchases = currentCustomer.purchases ? currentCustomer.purchases + ', ' + np : np;
+        localStorage.setItem('qm_customer', JSON.stringify(currentCustomer));
+        document.getElementById('confirmSection').style.display = 'none';
+        document.getElementById('successBox').style.display = 'block';
+        document.getElementById('successTitle').textContent = 'خرید موفق!';
+        document.getElementById('successText').innerHTML = 'محصول: <strong>' + selectedProduct.name + '</strong><br>مبلغ: <strong>' + Number(selectedProduct.price).toLocaleString('fa-IR') + ' تومان</strong>';
+        if (selectedProduct.file_link) {
+          document.getElementById('downloadBtnContainer').innerHTML = '<a href="'+selectedProduct.file_link+'" download class="btn btn-green" style="display:inline-flex;width:auto;padding:12px 28px;text-decoration:none;"><i class="fa-solid fa-download"></i> دانلود فایل</a>';
+        }
+        localStorage.removeItem('qm_buy_product'); localStorage.removeItem('qm_buy_product_name');
+
       } catch(e) { alert('خطا'); }
       finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-credit-card"></i> پرداخت'; }
     }
