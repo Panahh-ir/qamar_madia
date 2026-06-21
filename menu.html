@@ -52,15 +52,11 @@
       outline: none; font-family: inherit; transition: all 0.3s;
     }
     .search-box input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,175,147,0.1); }
-    .search-box i {
-      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-      color: #b8a48e; font-size: 14px;
-    }
+    .search-box i { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #b8a48e; font-size: 14px; }
     .filter-select { flex: 1; min-width: 140px; }
     .filter-select select {
-      width: 100%; padding: 12px 16px; border: 1.5px solid #e5ddd3;
-      border-radius: 12px; font-size: 13px; color: var(--dark);
-      background: var(--white); outline: none; font-family: inherit;
+      width: 100%; padding: 12px 16px; border: 1.5px solid #e5ddd3; border-radius: 12px;
+      font-size: 13px; color: var(--dark); background: var(--white); outline: none; font-family: inherit;
       cursor: pointer; appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b6f4e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: left 16px center;
@@ -103,6 +99,9 @@
     .footer-stat span { font-size: 18px; font-weight: 700; color: var(--dark); }
     .footer-stat small { font-size: 10px; color: #a08b73; }
     .footer-text { font-size: 11px; color: #b8a48e; }
+    .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+    .footer-links a { color: var(--brown); font-size: 12px; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+    .footer-links a:hover { color: var(--dark); }
 
     .floating-support {
       position: fixed; bottom: 24px; right: 24px;
@@ -121,13 +120,10 @@
     @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } .product-image { height: 160px; } }
     @media (max-width: 768px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .header-title { font-size: 18px; }
-      .header-logo { width: 36px; height: 36px; }
+      .header-title { font-size: 18px; } .header-logo { width: 36px; height: 36px; }
       .header-btn { font-size: 11px; padding: 6px 10px; }
-      .product-image { height: 140px; }
-      .product-info { padding: 10px 12px; }
-      .product-name { font-size: 12px; }
-      .product-price { font-size: 12px; }
+      .product-image { height: 140px; } .product-info { padding: 10px 12px; }
+      .product-name { font-size: 12px; } .product-price { font-size: 12px; }
       .search-filter-bar { flex-direction: column; gap: 8px; }
     }
     @media (max-width: 400px) { .products-grid { gap: 8px; } .product-image { height: 120px; } .product-name { font-size: 11px; } }
@@ -180,6 +176,10 @@
       <div class="footer-stat"><i class="fa-solid fa-heart"></i><span id="footerLikes">0</span><small>لایک</small></div>
       <div class="footer-stat"><i class="fa-solid fa-cart-shopping"></i><span id="footerOrders">0</span><small>سفارش</small></div>
     </div>
+    <div class="footer-links">
+      <a href="ads.html"><i class="fa-solid fa-ad"></i> رزرو تبلیغات</a>
+      <a href="support.html"><i class="fa-solid fa-headset"></i> پشتیبانی</a>
+    </div>
     <p class="footer-text"><i class="fa-solid fa-star-and-crescent"></i> رسانه هنری قمر — کلیه حقوق محفوظ است</p>
   </footer>
 
@@ -187,12 +187,10 @@
     <i class="fa-solid fa-headset"></i>
   </a>
 
-  <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwBVFp23ysijQCOHlc_0z7LmRCAMfWrLO9AXaja93qpbYXg_8hWEbYk4ipXs8YeI1dLhw/exec';
+    <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwcbAAlH_ZC9B0Zsq7uUqTjE6eVjJg5Ci0Tjcm6gV3nDiFoCjhdpmgUNjhPOkj2-_vCwQ/exec';
     let allProducts = [];
-
     const categoryLabels = { poster:'پوستر', typography:'تایپوگرافی', profile:'پروفایل', logo:'لوگو', other:'سایر' };
-
     let adCard = '';
 
     async function loadAd() {
@@ -202,43 +200,25 @@
         if (d.result==='success' && d.data.ads.length) {
           const approved = d.data.ads.find(a => a.status === 'approved');
           if (approved) {
-            adCard = `<div class="product-card" style="border:2px dashed #e74c3c;">
+            const onClick = approved.link_url ? `onclick="window.open('${approved.link_url}','_blank')"` : '';
+            adCard = `<div class="product-card" ${onClick} style="border:2px dashed #e74c3c;${onClick?'':'cursor:default;'}">
               <img src="${approved.image_url}" class="product-image" alt="${approved.title}" onerror="this.style.display='none'">
-              <div class="product-info">
-                <div class="product-name">${approved.title}</div>
-                <div class="product-meta"><span class="product-category" style="background:#e74c3c;color:#fff;">تبلیغ</span></div>
-                <div class="product-desc" style="font-size:11px;color:#a08b73;margin-top:4px;">${approved.description||''}</div>
-                <div class="product-like-row"><span style="font-size:10px;color:#a08b73;">محتوای تبلیغاتی</span></div>
-              </div></div>`;
+              <div class="product-info"><div class="product-name">${approved.title}</div><div class="product-meta"><span class="product-category" style="background:#e74c3c;color:#fff;">تبلیغ</span><span class="product-price" style="color:#e74c3c;">${approved.description||''}</span></div><div class="product-like-row"><span style="font-size:10px;color:#a08b73;">محتوای تبلیغاتی</span></div></div></div>`;
             return;
           }
         }
       } catch(e) {}
-      adCard = `<div class="product-card" style="border:2px dashed #e74c3c;">
+      adCard = `<div class="product-card" onclick="window.open('https://eitaa.com/Amirmahdi_code','_blank')" style="border:2px dashed #e74c3c;">
         <img src="https://cdn.imgurl.ir/uploads/m87412_4b5310ee-fa5a-4d2e-a58c-a9337ddb4f92.png" class="product-image" alt="حمایت از سازنده">
-        <div class="product-info">
-          <div class="product-name">حمایت از سازنده</div>
-          <div class="product-meta"><span class="product-category" style="background:#e74c3c;color:#fff;">رسمی</span></div>
-          <div class="product-desc" style="font-size:11px;color:#a08b73;margin-top:4px;">از سازنده حمایت کنید</div>
-          <div class="product-like-row"><span style="font-size:10px;color:#a08b73;">با تشکر از شما</span></div>
-        </div></div>`;
+        <div class="product-info"><div class="product-name">حمایت از سازنده</div><div class="product-meta"><span class="product-category" style="background:#e74c3c;color:#fff;">رسمی</span><span class="product-price" style="color:#e74c3c;">از سازنده حمایت کنید</span></div><div class="product-like-row"><span style="font-size:10px;color:#a08b73;">کلیک کنید</span></div></div></div>`;
     }
 
-    const customOrderCard = `<div class="product-card" onclick="window.location.href='mypage.html'" style="border:2px dashed #27ae60;">
-      <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#eafaf1,#d5f5e3);"><i class="fa-solid fa-pen-to-square" style="font-size:48px;color:#27ae60;"></i></div>
-      <div class="product-info"><div class="product-name">سفارش ساخت اختصاصی</div><div class="product-meta"><span class="product-category" style="background:#27ae60;color:var(--white);">ویژه</span><span class="product-price" style="color:#27ae60;">ثبت سفارش <span>کلیک کنید</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-star" style="color:#27ae60;"></i> نامحدود</span><span style="font-size:10px;color:#a08b73;">طراحی دلخواه شما</span></div></div></div>`;
-
-    const aiCard = `<div class="product-card" onclick="window.location.href='ai.html'" style="border:2px dashed var(--purple);">
-      <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f9f0ff,#ede0f7);"><i class="fa-solid fa-robot" style="font-size:48px;color:var(--purple);"></i></div>
-      <div class="product-info"><div class="product-name">طراحی با هوش مصنوعی</div><div class="product-meta"><span class="product-category" style="background:var(--purple);color:var(--white);">ویژه</span><span class="product-price" style="color:var(--purple);">رایگان <span>امتحان کنید</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple);"></i> خلاقیت بی‌نهایت</span><span style="font-size:10px;color:#a08b73;">ساخته شده با Ai</span></div></div></div>`;
-
-    const portfolioCard = `<div class="product-card" onclick="window.location.href='portfolio.html'" style="border:2px dashed #e67e22;">
-      <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fef5e7,#fdebd0);"><i class="fa-solid fa-palette" style="font-size:48px;color:#e67e22;"></i></div>
-      <div class="product-info"><div class="product-name">مشاهده نمونه کارها</div><div class="product-meta"><span class="product-category" style="background:#e67e22;color:var(--white);">ویژه</span><span class="product-price" style="color:#e67e22;">گالری <span>کلیک کنید</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-images" style="color:#e67e22;"></i> نمونه کارهای ما</span><span style="font-size:10px;color:#a08b73;">کارهای قبلی</span></div></div></div>`;
+    const customOrderCard = `<div class="product-card" onclick="window.location.href='mypage.html'" style="border:2px dashed #27ae60;"><div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#eafaf1,#d5f5e3);"><i class="fa-solid fa-pen-to-square" style="font-size:48px;color:#27ae60;"></i></div><div class="product-info"><div class="product-name">سفارش ساخت اختصاصی</div><div class="product-meta"><span class="product-category" style="background:#27ae60;color:var(--white);">ویژه</span><span class="product-price" style="color:#27ae60;">ثبت سفارش <span>کلیک کنید</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-star" style="color:#27ae60;"></i> نامحدود</span><span style="font-size:10px;color:#a08b73;">طراحی دلخواه شما</span></div></div></div>`;
+    const aiCard = `<div class="product-card" onclick="window.location.href='ai.html'" style="border:2px dashed var(--purple);"><div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f9f0ff,#ede0f7);"><i class="fa-solid fa-robot" style="font-size:48px;color:var(--purple);"></i></div><div class="product-info"><div class="product-name">طراحی با هوش مصنوعی</div><div class="product-meta"><span class="product-category" style="background:var(--purple);color:var(--white);">ویژه</span><span class="product-price" style="color:var(--purple);">رایگان <span>امتحان کنید</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple);"></i> خلاقیت بی‌نهایت</span><span style="font-size:10px;color:#a08b73;">ساخته شده با Ai</span></div></div></div>`;
+    const portfolioCard = `<div class="product-card" onclick="window.location.href='portfolio.html'" style="border:2px dashed #e67e22;"><div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fef5e7,#fdebd0);"><i class="fa-solid fa-palette" style="font-size:48px;color:#e67e22;"></i></div><div class="product-info"><div class="product-name">مشاهده نمونه کارها</div><div class="product-meta"><span class="product-category" style="background:#e67e22;color:var(--white);">ویژه</span><span class="product-price" style="color:#e67e22;">گالری <span>کلیک کنید</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-images" style="color:#e67e22;"></i> نمونه کارهای ما</span><span style="font-size:10px;color:#a08b73;">کارهای قبلی</span></div></div></div>`;
 
     function trackVisit() {
-      const lastVisit = localStorage.getItem('qm_last_visit');
-      const now = Date.now();
+      const lastVisit = localStorage.getItem('qm_last_visit'), now = Date.now();
       if (!lastVisit || (now - parseInt(lastVisit)) > 1800000) {
         localStorage.setItem('qm_last_visit', now);
         fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'trackVisit', ip_address:'visitor_'+now }) }).then(r=>r.json()).then(d=>{ if(d.result==='success'&&d.data.unique) loadFooterStats(); }).catch(()=>{});
