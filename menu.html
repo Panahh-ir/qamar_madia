@@ -187,7 +187,7 @@
     <i class="fa-solid fa-headset"></i>
   </a>
 
-    <script>
+  <script>
     const API_URL = 'https://script.google.com/macros/s/AKfycbwBVFp23ysijQCOHlc_0z7LmRCAMfWrLO9AXaja93qpbYXg_8hWEbYk4ipXs8YeI1dLhw/exec';
     let allProducts = [];
 
@@ -202,11 +202,11 @@
         if (d.result==='success' && d.data.ads.length) {
           const approved = d.data.ads.find(a => a.status === 'approved');
           if (approved) {
-            adCard = `<div class="product-card" style="border:2px dashed #e67e22;">
+            adCard = `<div class="product-card" style="border:2px dashed #e74c3c;">
               <img src="${approved.image_url}" class="product-image" alt="${approved.title}" onerror="this.style.display='none'">
               <div class="product-info">
                 <div class="product-name">${approved.title}</div>
-                <div class="product-meta"><span class="product-category" style="background:#e67e22;color:#fff;">تبلیغ</span></div>
+                <div class="product-meta"><span class="product-category" style="background:#e74c3c;color:#fff;">تبلیغ</span></div>
                 <div class="product-desc" style="font-size:11px;color:#a08b73;margin-top:4px;">${approved.description||''}</div>
                 <div class="product-like-row"><span style="font-size:10px;color:#a08b73;">محتوای تبلیغاتی</span></div>
               </div></div>`;
@@ -214,11 +214,11 @@
           }
         }
       } catch(e) {}
-      adCard = `<div class="product-card" style="border:2px dashed #e67e22;">
+      adCard = `<div class="product-card" style="border:2px dashed #e74c3c;">
         <img src="https://cdn.imgurl.ir/uploads/m87412_4b5310ee-fa5a-4d2e-a58c-a9337ddb4f92.png" class="product-image" alt="حمایت از سازنده">
         <div class="product-info">
           <div class="product-name">حمایت از سازنده</div>
-          <div class="product-meta"><span class="product-category" style="background:#e67e22;color:#fff;">رسمی</span></div>
+          <div class="product-meta"><span class="product-category" style="background:#e74c3c;color:#fff;">رسمی</span></div>
           <div class="product-desc" style="font-size:11px;color:#a08b73;margin-top:4px;">از سازنده حمایت کنید</div>
           <div class="product-like-row"><span style="font-size:10px;color:#a08b73;">با تشکر از شما</span></div>
         </div></div>`;
