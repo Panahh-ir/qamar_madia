@@ -63,6 +63,9 @@
     .preview-card .info .p-cat { font-size: 9px; background: #e74c3c; color: #fff; padding: 2px 8px; border-radius: 10px; }
     .preview-card .info .p-desc { font-size: 10px; color: #e74c3c; }
 
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 500; white-space: nowrap; }
+    .my-ad-item { background:#fdfaf6; border-radius:10px; padding:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+
     @media (max-width: 500px) { .container { padding: 12px 8px; } .card { padding: 20px 16px; } }
   </style>
 </head>
@@ -111,8 +114,6 @@
       <p class="subtitle">اطلاعات تبلیغ خود را وارد کنید</p>
 
       <form id="adForm">
-        <div class="form-group"><label><i class="fa-solid fa-user"></i> نام شما</label><input type="text" id="adName" placeholder="نام کامل" required></div>
-        <div class="form-group"><label><i class="fa-solid fa-phone"></i> راه ارتباطی (ایتا)</label><input type="text" id="adContact" placeholder="آیدی یا شماره ایتا" required></div>
         <div class="form-group"><label><i class="fa-solid fa-heading"></i> تیتر تبلیغ</label><input type="text" id="adTitle" placeholder="عنوان تبلیغ" required oninput="updatePreview()"></div>
         <div class="form-group"><label><i class="fa-solid fa-align-left"></i> توضیح کوتاه</label><input type="text" id="adDesc" placeholder="متن کوتاه تبلیغ" required oninput="updatePreview()"></div>
         <div class="form-group"><label><i class="fa-solid fa-image"></i> لینک تصویر</label><input type="url" id="adImage" placeholder="https://..." required oninput="updatePreview()"></div>
@@ -134,6 +135,12 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- MY ADS -->
+    <div class="card" id="myAdsCard" style="display:none;">
+      <h2><i class="fa-solid fa-list-check"></i> درخواست‌های من</h2>
+      <div id="myAdsList"></div>
     </div>
 
     <!-- SUCCESS -->
@@ -191,9 +198,9 @@
     function showAdForm() {
       document.getElementById('authSection').style.display = 'none';
       document.getElementById('requestCard').style.display = 'block';
-      document.getElementById('adName').value = currentCustomer.name || '';
-      document.getElementById('adContact').value = currentCustomer.contact || '';
+      document.getElementById('myAdsCard').style.display = 'block';
       checkAdStatus();
+      loadMyAds();
     }
 
     function updatePreview() {
@@ -210,7 +217,7 @@
       btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ارسال...';
       try {
         const res = await fetch(API_URL, { method:'POST', body: JSON.stringify({
-          action:'addAd', customer_name: document.getElementById('adName').value, contact: document.getElementById('adContact').value,
+          action:'addAd', customer_name: currentCustomer.name, contact: currentCustomer.contact,
           title: document.getElementById('adTitle').value, description: document.getElementById('adDesc').value,
           image_url: document.getElementById('adImage').value, link_url: document.getElementById('adLink').value
         })});
@@ -219,6 +226,7 @@
           document.getElementById('requestCard').style.display = 'none';
           document.getElementById('successCard').style.display = 'block';
           localStorage.setItem('qm_ad_id', d.data.ad_id);
+          loadMyAds();
         } else { err.textContent = d.message || 'خطا'; err.style.display = 'block'; }
       } catch(e) { err.textContent = 'خطا'; err.style.display = 'block'; }
       finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ارسال'; }
@@ -232,10 +240,35 @@
         const d = await res.json();
         if (d.result==='success') {
           const ad = d.data.ads.find(a => a.ad_id === adId);
-          if (ad && ad.price) {
+          if (ad && ad.price && ad.status !== 'approved') {
             document.getElementById('adPaySection').style.display = 'block';
             document.getElementById('adPriceText').textContent = Number(ad.price).toLocaleString('fa-IR');
           }
+        }
+      } catch(e) {}
+    }
+
+    async function loadMyAds() {
+      if (!currentCustomer) return;
+      try {
+        const res = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'getAds' }) });
+        const d = await res.json();
+        if (d.result === 'success') {
+          const myAds = d.data.ads.filter(a => a.customer_name && a.customer_name.includes(currentCustomer.name));
+          const container = document.getElementById('myAdsList');
+          if (myAds.length === 0) {
+            container.innerHTML = '<p style="text-align:center;color:#a08b73;">هیچ درخواستی ندارید</p>';
+            return;
+          }
+          container.innerHTML = myAds.map(a => `
+            <div class="my-ad-item">
+              <div>
+                <strong>${a.title}</strong>
+                <p style="font-size:11px;color:#a08b73;">${a.description||''}</p>
+                ${a.price ? `<span style="color:var(--green);font-size:12px;">${Number(a.price).toLocaleString('fa-IR')} تومان</span>` : '<span style="color:#f39c12;font-size:12px;">منتظر قیمت</span>'}
+              </div>
+              <span class="badge" style="background:${a.status==='approved'?'#eafaf1':a.status==='rejected'?'#fdf0ee':'#fef9e7'};color:${a.status==='approved'?'#27ae60':a.status==='rejected'?'#c0392b':'#f39c12'};">${a.status==='approved'?'تایید شده':a.status==='rejected'?'رد شده':'در انتظار'}</span>
+            </div>`).join('');
         }
       } catch(e) {}
     }
