@@ -10,7 +10,7 @@
     :root {
       --cream: #fdfbf7; --milk: #f5efe6; --beige: #ede4d8;
       --gold: #c8af93; --brown: #8b6f4e; --dark: #3e2c1c;
-      --text: #5c4a3a; --white: #ffffff; --red: #e74c3c; --green: #27ae60; --purple: #8e44ad;
+      --text: #5c4a3a; --white: #ffffff; --red: #e74c3c; --green: #27ae60; --purple: #8e44ad; --orange: #e67e22;
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -188,97 +188,94 @@
   </a>
 
     <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwO7MVGgSVbHar635pyxVqRAlLehpR1q9oc4mU0f20E9JbZkhHzljq87gbyjt8K8RuxwA/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwBVFp23ysijQCOHlc_0z7LmRCAMfWrLO9AXaja93qpbYXg_8hWEbYk4ipXs8YeI1dLhw/exec';
     let allProducts = [];
 
-    const categoryLabels = {
-      poster: 'پوستر', typography: 'تایپوگرافی', profile: 'پروفایل', logo: 'لوگو', other: 'سایر'
-    };
+    const categoryLabels = { poster:'پوستر', typography:'تایپوگرافی', profile:'پروفایل', logo:'لوگو', other:'سایر' };
 
-    const customOrderCard = `
-      <div class="product-card" onclick="window.location.href='mypage.html'" style="border: 2px dashed #27ae60;">
-        <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #eafaf1, #d5f5e3);">
-          <i class="fa-solid fa-pen-to-square" style="font-size:48px;color:#27ae60;"></i>
-        </div>
+    let adCard = '';
+
+    async function loadAd() {
+      try {
+        const res = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'getAds' }) });
+        const d = await res.json();
+        if (d.result==='success' && d.data.ads.length) {
+          const approved = d.data.ads.find(a => a.status === 'approved');
+          if (approved) {
+            adCard = `<div class="product-card" style="border:2px dashed #e67e22;">
+              <img src="${approved.image_url}" class="product-image" alt="${approved.title}" onerror="this.style.display='none'">
+              <div class="product-info">
+                <div class="product-name">${approved.title}</div>
+                <div class="product-meta"><span class="product-category" style="background:#e67e22;color:#fff;">تبلیغ</span></div>
+                <div class="product-desc" style="font-size:11px;color:#a08b73;margin-top:4px;">${approved.description||''}</div>
+                <div class="product-like-row"><span style="font-size:10px;color:#a08b73;">محتوای تبلیغاتی</span></div>
+              </div></div>`;
+            return;
+          }
+        }
+      } catch(e) {}
+      adCard = `<div class="product-card" style="border:2px dashed #e67e22;">
+        <img src="https://cdn.imgurl.ir/uploads/m87412_4b5310ee-fa5a-4d2e-a58c-a9337ddb4f92.png" class="product-image" alt="حمایت از سازنده">
         <div class="product-info">
-          <div class="product-name">سفارش ساخت اختصاصی</div>
-          <div class="product-meta"><span class="product-category" style="background:#27ae60;color:var(--white);">ویژه</span><span class="product-price" style="color:#27ae60;">ثبت سفارش <span>کلیک کنید</span></span></div>
-          <div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-star" style="color:#27ae60;"></i> نامحدود</span><span style="font-size:10px;color:#a08b73;">طراحی دلخواه شما</span></div>
-        </div>
-      </div>`;
-    const aiCard = `
-      <div class="product-card" onclick="window.location.href='ai.html'" style="border: 2px dashed var(--purple);">
-        <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #f9f0ff, #ede0f7);">
-          <i class="fa-solid fa-robot" style="font-size:48px;color:var(--purple);"></i>
-        </div>
-        <div class="product-info">
-          <div class="product-name">طراحی با هوش مصنوعی</div>
-          <div class="product-meta"><span class="product-category" style="background:var(--purple);color:var(--white);">ویژه</span><span class="product-price" style="color:var(--purple);">رایگان <span>امتحان کنید</span></span></div>
-          <div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple);"></i> خلاقیت بی‌نهایت</span><span style="font-size:10px;color:#a08b73;">ساخته شده با Ai</span></div>
-        </div>
-      </div>`;
+          <div class="product-name">حمایت از سازنده</div>
+          <div class="product-meta"><span class="product-category" style="background:#e67e22;color:#fff;">رسمی</span></div>
+          <div class="product-desc" style="font-size:11px;color:#a08b73;margin-top:4px;">از سازنده حمایت کنید</div>
+          <div class="product-like-row"><span style="font-size:10px;color:#a08b73;">با تشکر از شما</span></div>
+        </div></div>`;
+    }
+
+    const customOrderCard = `<div class="product-card" onclick="window.location.href='mypage.html'" style="border:2px dashed #27ae60;">
+      <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#eafaf1,#d5f5e3);"><i class="fa-solid fa-pen-to-square" style="font-size:48px;color:#27ae60;"></i></div>
+      <div class="product-info"><div class="product-name">سفارش ساخت اختصاصی</div><div class="product-meta"><span class="product-category" style="background:#27ae60;color:var(--white);">ویژه</span><span class="product-price" style="color:#27ae60;">ثبت سفارش <span>کلیک کنید</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-star" style="color:#27ae60;"></i> نامحدود</span><span style="font-size:10px;color:#a08b73;">طراحی دلخواه شما</span></div></div></div>`;
+
+    const aiCard = `<div class="product-card" onclick="window.location.href='ai.html'" style="border:2px dashed var(--purple);">
+      <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f9f0ff,#ede0f7);"><i class="fa-solid fa-robot" style="font-size:48px;color:var(--purple);"></i></div>
+      <div class="product-info"><div class="product-name">طراحی با هوش مصنوعی</div><div class="product-meta"><span class="product-category" style="background:var(--purple);color:var(--white);">ویژه</span><span class="product-price" style="color:var(--purple);">رایگان <span>امتحان کنید</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple);"></i> خلاقیت بی‌نهایت</span><span style="font-size:10px;color:#a08b73;">ساخته شده با Ai</span></div></div></div>`;
+
+    const portfolioCard = `<div class="product-card" onclick="window.location.href='portfolio.html'" style="border:2px dashed #e67e22;">
+      <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fef5e7,#fdebd0);"><i class="fa-solid fa-palette" style="font-size:48px;color:#e67e22;"></i></div>
+      <div class="product-info"><div class="product-name">مشاهده نمونه کارها</div><div class="product-meta"><span class="product-category" style="background:#e67e22;color:var(--white);">ویژه</span><span class="product-price" style="color:#e67e22;">گالری <span>کلیک کنید</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-images" style="color:#e67e22;"></i> نمونه کارهای ما</span><span style="font-size:10px;color:#a08b73;">کارهای قبلی</span></div></div></div>`;
 
     function trackVisit() {
       const lastVisit = localStorage.getItem('qm_last_visit');
       const now = Date.now();
       if (!lastVisit || (now - parseInt(lastVisit)) > 1800000) {
         localStorage.setItem('qm_last_visit', now);
-        fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'trackVisit', ip_address: 'visitor_' + now }) })
-        .then(r => r.json()).then(d => { if (d.result === 'success' && d.data.unique) loadFooterStats(); }).catch(() => {});
+        fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'trackVisit', ip_address:'visitor_'+now }) }).then(r=>r.json()).then(d=>{ if(d.result==='success'&&d.data.unique) loadFooterStats(); }).catch(()=>{});
       }
     }
 
     async function loadProducts() {
+      await loadAd();
       try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getProducts', role: 'visitor', username: '' }) });
+        const res = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'getProducts', role:'visitor', username:'' }) });
         const data = await res.json();
-        if (data.result === 'success' && data.data.products.length > 0) { allProducts = data.data.products.filter(p => p.status !== 'sold'); renderProducts(allProducts); }
-        else { document.getElementById('productsGrid').innerHTML = customOrderCard + aiCard + '<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>هنوز محصولی ثبت نشده است.</p></div>'; }
-      } catch(e) { document.getElementById('productsGrid').innerHTML = customOrderCard + aiCard + '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>خطا</p></div>'; }
+        if (data.result==='success' && data.data.products.length>0) { allProducts = data.data.products.filter(p=>p.status!=='sold'); renderProducts(allProducts); }
+        else { document.getElementById('productsGrid').innerHTML = adCard + customOrderCard + aiCard + portfolioCard + '<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>هنوز محصولی ثبت نشده است.</p></div>'; }
+      } catch(e) { document.getElementById('productsGrid').innerHTML = adCard + customOrderCard + aiCard + portfolioCard + '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>خطا</p></div>'; }
     }
 
     function renderProducts(products) {
       const grid = document.getElementById('productsGrid');
-      if (products.length === 0) { grid.innerHTML = customOrderCard + aiCard + '<div class="no-results"><i class="fa-solid fa-search"></i><p>پیدا نشد.</p></div>'; return; }
-      grid.innerHTML = customOrderCard + aiCard + products.map(p => {
-        const hasLiked = localStorage.getItem('qm_liked_' + p.product_id) === 'true';
-        return `<div class="product-card" onclick="goToProduct('${p.product_id}')"><img src="${p.header_image || 'https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'}" alt="${p.name}" class="product-image" onerror="this.src='https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'"><div class="product-info"><div class="product-name">${p.name}</div><div class="product-meta"><span class="product-category">${categoryLabels[p.category] || p.category || 'سایر'}</span><span class="product-price">${Number(p.price).toLocaleString('fa-IR')} <span>تومان</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-heart"></i> ${p.likes || 0}</span><button class="btn-card-like ${hasLiked ? 'liked' : ''}" onclick="event.stopPropagation(); toggleLikeCard('${p.product_id}', this)"><i class="${hasLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i></button></div></div></div>`;
+      if (products.length===0) { grid.innerHTML = adCard + customOrderCard + aiCard + portfolioCard + '<div class="no-results"><i class="fa-solid fa-search"></i><p>پیدا نشد.</p></div>'; return; }
+      grid.innerHTML = adCard + customOrderCard + aiCard + portfolioCard + products.map(p=>{
+        const hasLiked = localStorage.getItem('qm_liked_'+p.product_id)==='true';
+        return `<div class="product-card" onclick="goToProduct('${p.product_id}')"><img src="${p.header_image||'https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'}" alt="${p.name}" class="product-image" onerror="this.src='https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'"><div class="product-info"><div class="product-name">${p.name}</div><div class="product-meta"><span class="product-category">${categoryLabels[p.category]||p.category||'سایر'}</span><span class="product-price">${Number(p.price).toLocaleString('fa-IR')} <span>تومان</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-heart"></i> ${p.likes||0}</span><button class="btn-card-like ${hasLiked?'liked':''}" onclick="event.stopPropagation();toggleLikeCard('${p.product_id}',this)"><i class="${hasLiked?'fa-solid':'fa-regular'} fa-heart"></i></button></div></div></div>`;
       }).join('');
     }
 
-    function filterProducts() {
-      const search = document.getElementById('searchInput').value.trim().toLowerCase();
-      const filter = document.getElementById('filterSelect').value;
-      let filtered = allProducts;
-      if (search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search));
-      if (filter !== 'all') filtered = filtered.filter(p => p.category === filter);
-      renderProducts(filtered);
-    }
+    function filterProducts() { const s=document.getElementById('searchInput').value.trim().toLowerCase(), f=document.getElementById('filterSelect').value; let filtered=allProducts; if(s) filtered=filtered.filter(p=>p.name.toLowerCase().includes(s)); if(f!=='all') filtered=filtered.filter(p=>p.category===f); renderProducts(filtered); }
+    function goToProduct(id) { localStorage.setItem('qm_selected_product',id); window.location.href='shop.html'; }
 
-    function goToProduct(productId) { localStorage.setItem('qm_selected_product', productId); window.location.href = 'shop.html'; }
-
-    async function toggleLikeCard(productId, button) {
-      const likeKey = 'qm_liked_' + productId;
-      const hasLiked = localStorage.getItem(likeKey) === 'true';
-      if (hasLiked) { localStorage.removeItem(likeKey); button.classList.remove('liked'); button.innerHTML = '<i class="fa-regular fa-heart"></i>'; }
-      else { localStorage.setItem(likeKey, 'true'); button.classList.add('liked'); button.innerHTML = '<i class="fa-solid fa-heart"></i>'; }
-      try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: hasLiked ? 'remove' : 'add' }) });
-        const d = await res.json();
-        if (d.result === 'success') { const el = button.parentElement.querySelector('.product-likes-count'); if (el) el.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes; loadFooterStats(); }
-      } catch(e) {}
+    async function toggleLikeCard(productId,button) {
+      const key='qm_liked_'+productId, has=localStorage.getItem(key)==='true';
+      if(has){ localStorage.removeItem(key); button.classList.remove('liked'); button.innerHTML='<i class="fa-regular fa-heart"></i>'; }
+      else { localStorage.setItem(key,'true'); button.classList.add('liked'); button.innerHTML='<i class="fa-solid fa-heart"></i>'; }
+      try { const r=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'incrementLikes',product_id:productId,action_type:has?'remove':'add'})}); const d=await r.json(); if(d.result==='success'){ const el=button.parentElement.querySelector('.product-likes-count'); if(el) el.innerHTML='<i class="fa-solid fa-heart"></i> '+d.data.likes; loadFooterStats(); } } catch(e){}
     }
 
     async function loadFooterStats() {
-      try {
-        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getStats' }) });
-        const data = await res.json();
-        if (data.result === 'success') {
-          document.getElementById('footerVisits').textContent = (data.data.visits || 0).toLocaleString('fa-IR');
-          document.getElementById('footerLikes').textContent = (data.data.likes || 0).toLocaleString('fa-IR');
-          document.getElementById('footerOrders').textContent = (data.data.orders || 0).toLocaleString('fa-IR');
-        }
-      } catch(e) {}
+      try { const r=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'getStats'})}); const d=await r.json(); if(d.result==='success'){ document.getElementById('footerVisits').textContent=(d.data.visits||0).toLocaleString('fa-IR'); document.getElementById('footerLikes').textContent=(d.data.likes||0).toLocaleString('fa-IR'); document.getElementById('footerOrders').textContent=(d.data.orders||0).toLocaleString('fa-IR'); } } catch(e){}
     }
 
     trackVisit(); loadProducts(); loadFooterStats();
