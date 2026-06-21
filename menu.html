@@ -33,8 +33,6 @@
     }
     .btn-profile { color: var(--brown); border: 1.5px solid var(--gold); }
     .btn-profile:hover { background: var(--milk); }
-    .btn-support { color: #2196F3; border: 1.5px solid #2196F3; }
-    .btn-support:hover { background: #e3f2fd; }
     .header-logo {
       width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
       border: 2px solid var(--milk); box-shadow: 0 3px 10px rgba(0,0,0,0.05);
@@ -106,7 +104,6 @@
     .footer-stat small { font-size: 10px; color: #a08b73; }
     .footer-text { font-size: 11px; color: #b8a48e; }
 
-    /* ========== FLOATING SUPPORT ========== */
     .floating-support {
       position: fixed; bottom: 24px; right: 24px;
       width: 56px; height: 56px;
@@ -140,16 +137,15 @@
 
   <header class="header">
     <div class="header-inner">
-      <div class="header-btns">
-        <a href="mypage.html" class="header-btn btn-profile"><i class="fa-solid fa-user"></i> صفحه شخصی</a>
-        <a href="support.html" class="header-btn btn-support"><i class="fa-solid fa-headset"></i> پشتیبانی</a>
-      </div>
       <div style="display:flex;align-items:center;gap:10px;">
         <img src="https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg" alt="رسانه هنری قمر" class="header-logo">
         <div>
           <div class="header-title">رسانه هنری قمر</div>
           <div class="header-subtitle">هنر ماندگار، از قمر ماندگارتر</div>
         </div>
+      </div>
+      <div class="header-btns">
+        <a href="mypage.html" class="header-btn btn-profile"><i class="fa-solid fa-user"></i> صفحه شخصی</a>
       </div>
     </div>
   </header>
@@ -206,18 +202,10 @@
         </div>
         <div class="product-info">
           <div class="product-name">سفارش ساخت اختصاصی</div>
-          <div class="product-meta">
-            <span class="product-category" style="background:#27ae60;color:var(--white);">ویژه</span>
-            <span class="product-price" style="color:#27ae60;">ثبت سفارش <span>کلیک کنید</span></span>
-          </div>
-          <div class="product-like-row">
-            <span class="product-likes-count"><i class="fa-solid fa-star" style="color:#27ae60;"></i> نامحدود</span>
-            <span style="font-size:10px;color:#a08b73;">طراحی دلخواه شما</span>
-          </div>
+          <div class="product-meta"><span class="product-category" style="background:#27ae60;color:var(--white);">ویژه</span><span class="product-price" style="color:#27ae60;">ثبت سفارش <span>کلیک کنید</span></span></div>
+          <div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-star" style="color:#27ae60;"></i> نامحدود</span><span style="font-size:10px;color:#a08b73;">طراحی دلخواه شما</span></div>
         </div>
-      </div>
-    `;
-
+      </div>`;
     const aiCard = `
       <div class="product-card" onclick="window.location.href='ai.html'" style="border: 2px dashed var(--purple);">
         <div class="product-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, #f9f0ff, #ede0f7);">
@@ -225,33 +213,18 @@
         </div>
         <div class="product-info">
           <div class="product-name">طراحی با هوش مصنوعی</div>
-          <div class="product-meta">
-            <span class="product-category" style="background:var(--purple);color:var(--white);">ویژه</span>
-            <span class="product-price" style="color:var(--purple);">رایگان <span>امتحان کنید</span></span>
-          </div>
-          <div class="product-like-row">
-            <span class="product-likes-count"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple);"></i> خلاقیت بی‌نهایت</span>
-            <span style="font-size:10px;color:#a08b73;">ساخته شده با Ai</span>
-          </div>
+          <div class="product-meta"><span class="product-category" style="background:var(--purple);color:var(--white);">ویژه</span><span class="product-price" style="color:var(--purple);">رایگان <span>امتحان کنید</span></span></div>
+          <div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple);"></i> خلاقیت بی‌نهایت</span><span style="font-size:10px;color:#a08b73;">ساخته شده با Ai</span></div>
         </div>
-      </div>
-    `;
+      </div>`;
 
-    // ========== VISIT TRACKING ==========
     function trackVisit() {
       const lastVisit = localStorage.getItem('qm_last_visit');
       const now = Date.now();
-      
-      if (!lastVisit || (now - parseInt(lastVisit)) > 1800000) { // 30 min = 1,800,000 ms
+      if (!lastVisit || (now - parseInt(lastVisit)) > 1800000) {
         localStorage.setItem('qm_last_visit', now);
-        fetch(API_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'trackVisit', ip_address: 'visitor_' + now })
-        }).then(r => r.json()).then(d => {
-          if (d.result === 'success' && d.data.unique) {
-            loadFooterStats();
-          }
-        }).catch(() => {});
+        fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'trackVisit', ip_address: 'visitor_' + now }) })
+        .then(r => r.json()).then(d => { if (d.result === 'success' && d.data.unique) loadFooterStats(); }).catch(() => {});
       }
     }
 
@@ -259,43 +232,17 @@
       try {
         const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'getProducts', role: 'visitor', username: '' }) });
         const data = await res.json();
-        if (data.result === 'success' && data.data.products.length > 0) {
-          allProducts = data.data.products.filter(p => p.status !== 'sold');
-          renderProducts(allProducts);
-        } else {
-          document.getElementById('productsGrid').innerHTML = customOrderCard + aiCard + '<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>هنوز محصولی ثبت نشده است.</p></div>';
-        }
-      } catch(e) {
-        document.getElementById('productsGrid').innerHTML = customOrderCard + aiCard + '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>خطا در بارگذاری</p></div>';
-      }
+        if (data.result === 'success' && data.data.products.length > 0) { allProducts = data.data.products.filter(p => p.status !== 'sold'); renderProducts(allProducts); }
+        else { document.getElementById('productsGrid').innerHTML = customOrderCard + aiCard + '<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>هنوز محصولی ثبت نشده است.</p></div>'; }
+      } catch(e) { document.getElementById('productsGrid').innerHTML = customOrderCard + aiCard + '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>خطا</p></div>'; }
     }
 
     function renderProducts(products) {
       const grid = document.getElementById('productsGrid');
-      if (products.length === 0) {
-        grid.innerHTML = customOrderCard + aiCard + '<div class="no-results"><i class="fa-solid fa-search"></i><p>محصولی با این مشخصات پیدا نشد.</p></div>';
-        return;
-      }
+      if (products.length === 0) { grid.innerHTML = customOrderCard + aiCard + '<div class="no-results"><i class="fa-solid fa-search"></i><p>پیدا نشد.</p></div>'; return; }
       grid.innerHTML = customOrderCard + aiCard + products.map(p => {
         const hasLiked = localStorage.getItem('qm_liked_' + p.product_id) === 'true';
-        return `
-          <div class="product-card" onclick="goToProduct('${p.product_id}')">
-            <img src="${p.header_image || 'https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'}" alt="${p.name}" class="product-image" onerror="this.src='https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'">
-            <div class="product-info">
-              <div class="product-name">${p.name}</div>
-              <div class="product-meta">
-                <span class="product-category">${categoryLabels[p.category] || p.category || 'سایر'}</span>
-                <span class="product-price">${Number(p.price).toLocaleString('fa-IR')} <span>تومان</span></span>
-              </div>
-              <div class="product-like-row">
-                <span class="product-likes-count"><i class="fa-solid fa-heart"></i> ${p.likes || 0}</span>
-                <button class="btn-card-like ${hasLiked ? 'liked' : ''}" onclick="event.stopPropagation(); toggleLikeCard('${p.product_id}', this)">
-                  <i class="${hasLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
+        return `<div class="product-card" onclick="goToProduct('${p.product_id}')"><img src="${p.header_image || 'https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'}" alt="${p.name}" class="product-image" onerror="this.src='https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg'"><div class="product-info"><div class="product-name">${p.name}</div><div class="product-meta"><span class="product-category">${categoryLabels[p.category] || p.category || 'سایر'}</span><span class="product-price">${Number(p.price).toLocaleString('fa-IR')} <span>تومان</span></span></div><div class="product-like-row"><span class="product-likes-count"><i class="fa-solid fa-heart"></i> ${p.likes || 0}</span><button class="btn-card-like ${hasLiked ? 'liked' : ''}" onclick="event.stopPropagation(); toggleLikeCard('${p.product_id}', this)"><i class="${hasLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i></button></div></div></div>`;
       }).join('');
     }
 
@@ -308,29 +255,18 @@
       renderProducts(filtered);
     }
 
-    function goToProduct(productId) {
-      localStorage.setItem('qm_selected_product', productId);
-      window.location.href = 'shop.html';
-    }
+    function goToProduct(productId) { localStorage.setItem('qm_selected_product', productId); window.location.href = 'shop.html'; }
 
     async function toggleLikeCard(productId, button) {
       const likeKey = 'qm_liked_' + productId;
       const hasLiked = localStorage.getItem(likeKey) === 'true';
-      if (hasLiked) {
-        localStorage.removeItem(likeKey); button.classList.remove('liked'); button.innerHTML = '<i class="fa-regular fa-heart"></i>';
-        try {
-          const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: 'remove' }) });
-          const d = await res.json();
-          if (d.result === 'success') { const el = button.parentElement.querySelector('.product-likes-count'); if (el) el.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes; loadFooterStats(); }
-        } catch(e) {}
-      } else {
-        localStorage.setItem(likeKey, 'true'); button.classList.add('liked'); button.innerHTML = '<i class="fa-solid fa-heart"></i>';
-        try {
-          const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: 'add' }) });
-          const d = await res.json();
-          if (d.result === 'success') { const el = button.parentElement.querySelector('.product-likes-count'); if (el) el.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes; loadFooterStats(); }
-        } catch(e) {}
-      }
+      if (hasLiked) { localStorage.removeItem(likeKey); button.classList.remove('liked'); button.innerHTML = '<i class="fa-regular fa-heart"></i>'; }
+      else { localStorage.setItem(likeKey, 'true'); button.classList.add('liked'); button.innerHTML = '<i class="fa-solid fa-heart"></i>'; }
+      try {
+        const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'incrementLikes', product_id: productId, action_type: hasLiked ? 'remove' : 'add' }) });
+        const d = await res.json();
+        if (d.result === 'success') { const el = button.parentElement.querySelector('.product-likes-count'); if (el) el.innerHTML = '<i class="fa-solid fa-heart"></i> ' + d.data.likes; loadFooterStats(); }
+      } catch(e) {}
     }
 
     async function loadFooterStats() {
@@ -345,9 +281,7 @@
       } catch(e) {}
     }
 
-    trackVisit();
-    loadProducts();
-    loadFooterStats();
+    trackVisit(); loadProducts(); loadFooterStats();
   </script>
 </body>
 </html>
