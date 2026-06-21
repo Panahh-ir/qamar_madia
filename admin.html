@@ -185,10 +185,10 @@
       <div class="error-message" id="rejectError"></div>
       <div class="modal-buttons"><button type="button" class="btn btn-sm btn-outline" onclick="closeModal('rejectModal')">انصراف</button><button type="submit" class="btn btn-sm btn-danger">رد سفارش</button></div>
     </form></div>
-        </div>
+  </div>
 
   <script>
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwBVFp23ysijQCOHlc_0z7LmRCAMfWrLO9AXaja93qpbYXg_8hWEbYk4ipXs8YeI1dLhw/exec';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwcbAAlH_ZC9B0Zsq7uUqTjE6eVjJg5Ci0Tjcm6gV3nDiFoCjhdpmgUNjhPOkj2-_vCwQ/exec';
   let currentUser = null;
 
   const categoryLabels = { poster: 'پوستر', typography: 'تایپوگرافی', profile: 'پروفایل', logo: 'لوگو', other: 'سایر' };
@@ -216,9 +216,7 @@
       const res = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'login', username: u, password: p }) });
       const d = await res.json();
       if (d.result === 'success') {
-        currentUser = d.data;
-        localStorage.setItem('qm_user', JSON.stringify(currentUser));
-        // اگر سازنده است، هدایت به creator.html
+        currentUser = d.data; localStorage.setItem('qm_user', JSON.stringify(currentUser));
         if (currentUser.role === 'creator') { window.location.href = 'creator.html'; return; }
         showDashboard();
       } else { err.textContent = d.message || 'خطا در ورود'; err.style.display = 'block'; }
@@ -333,20 +331,20 @@
     document.getElementById('portfolioModal').classList.add('active');
   }
 
-      document.getElementById('portfolioForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const editId = document.getElementById('portfolioEditId').value;
-      const data = { action: editId?'editPortfolio':'addPortfolio', title: document.getElementById('portfolioTitle').value, description: document.getElementById('portfolioDesc').value, image_url: document.getElementById('portfolioImage').value, added_by_name: currentUser.name, added_by_role: getRoleLabel(currentUser.role) };
-      if (editId) data.portfolio_id = editId;
-      const res = await fetch(API_URL, { method:'POST', body: JSON.stringify(data) });
-      const d = await res.json();
-      if (d.result==='success') { closeModal('portfolioModal'); loadPortfoliosAdmin(); }
-    });
+  document.getElementById('portfolioForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const editId = document.getElementById('portfolioEditId').value;
+    const data = { action: editId?'editPortfolio':'addPortfolio', title: document.getElementById('portfolioTitle').value, description: document.getElementById('portfolioDesc').value, image_url: document.getElementById('portfolioImage').value, added_by_name: currentUser.name, added_by_role: getRoleLabel(currentUser.role) };
+    if (editId) data.portfolio_id = editId;
+    const res = await fetch(API_URL, { method:'POST', body: JSON.stringify(data) });
+    const d = await res.json();
+    if (d.result==='success') { closeModal('portfolioModal'); loadPortfoliosAdmin(); }
+  });
 
-    async function editPortfolio(id) { openPortfolioModal(id); }
-    async function deletePortfolio(id) { if(confirm('حذف؟')) { await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'deletePortfolio', portfolio_id: id }) }); loadPortfoliosAdmin(); } }
+  async function editPortfolio(id) { openPortfolioModal(id); }
+  async function deletePortfolio(id) { if(confirm('حذف؟')) { await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'deletePortfolio', portfolio_id: id }) }); loadPortfoliosAdmin(); } }
 
-    // ========== ORDERS ==========
+        // ========== ORDERS ==========
     async function loadOrdersAdmin() {
       const s = document.getElementById('sectionOrders');
       s.innerHTML = `<button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-right"></i> بازگشت</button><h2><i class="fa-solid fa-clipboard-list"></i> سفارشات</h2><div style="overflow-x:auto;"><table><thead><tr><th>کد</th><th>مشتری</th><th>نوع</th><th>قیمت</th><th>پرداخت</th><th>وضعیت</th><th>تاریخ</th><th>عملیات</th></tr></thead><tbody id="ordersTable"></tbody></table></div>`;
@@ -392,10 +390,7 @@
         return;
       }
       const s = document.getElementById('sectionUsers');
-      s.innerHTML = `<button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-right"></i> بازگشت</button>
-        <h2><i class="fa-solid fa-users-gear"></i> مدیریت کاربران</h2>
-        <button class="btn btn-sm btn-primary" onclick="openUserModal()" style="margin-bottom:12px;"><i class="fa-solid fa-plus"></i> افزودن کاربر</button>
-        <div style="overflow-x:auto;"><table><thead><tr><th>نام کاربری</th><th>نام</th><th>نقش</th><th>عملیات</th></tr></thead><tbody id="usersTable"></tbody></table></div>`;
+      s.innerHTML = `<button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-right"></i> بازگشت</button><h2><i class="fa-solid fa-users-gear"></i> مدیریت کاربران</h2><button class="btn btn-sm btn-primary" onclick="openUserModal()" style="margin-bottom:12px;"><i class="fa-solid fa-plus"></i> افزودن کاربر</button><div style="overflow-x:auto;"><table><thead><tr><th>نام کاربری</th><th>نام</th><th>نقش</th><th>عملیات</th></tr></thead><tbody id="usersTable"></tbody></table></div>`;
       loadUsersList();
     }
 
@@ -403,9 +398,7 @@
       const res = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'getUsers' }) });
       const d = await res.json();
       const tbody = document.getElementById('usersTable');
-      if (d.result==='success') {
-        tbody.innerHTML = d.data.users.map(u => `<tr><td><button class="btn btn-xs btn-outline" onclick="showContent('${u.username}')"><i class="fa-solid fa-user"></i></button></td><td>${u.name}</td><td>${getRoleLabel(u.role)}</td><td class="actions">${getUserActions(u)}</td></tr>`).join('');
-      }
+      if (d.result==='success') { tbody.innerHTML = d.data.users.map(u => `<tr><td><button class="btn btn-xs btn-outline" onclick="showContent('${u.username}')"><i class="fa-solid fa-user"></i></button></td><td>${u.name}</td><td>${getRoleLabel(u.role)}</td><td class="actions">${getUserActions(u)}</td></tr>`).join(''); }
     }
 
     function getUserActions(user) {
@@ -434,16 +427,31 @@
         return;
       }
       const s = document.getElementById('sectionAds');
-      s.innerHTML = `<button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-right"></i> بازگشت</button><h2><i class="fa-solid fa-ad"></i> تبلیغات</h2><div style="overflow-x:auto;"><table><thead><tr><th>تیتر</th><th>توضیح</th><th>تصویر</th><th>مشتری</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="adsTable"></tbody></table></div>`;
+      s.innerHTML = `<button class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-right"></i> بازگشت</button><h2><i class="fa-solid fa-ad"></i> تبلیغات</h2><div style="overflow-x:auto;"><table><thead><tr><th>تیتر</th><th>توضیح</th><th>تصویر</th><th>لینک</th><th>مشتری</th><th>قیمت</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="adsTable"></tbody></table></div>`;
       const res = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'getAds' }) });
       const d = await res.json();
       const tbody = document.getElementById('adsTable');
       if (d.result==='success' && d.data.ads.length) {
-        tbody.innerHTML = d.data.ads.map(a => `<tr><td>${a.title}</td><td>${a.description||'-'}</td><td><img src="${a.image_url}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;" onerror="this.style.display='none'"></td><td>${a.customer_name||'-'}</td><td><span class="badge ${a.status==='approved'?'badge-success':a.status==='rejected'?'badge-danger':'badge-warning'}">${a.status==='approved'?'تایید':a.status==='rejected'?'رد':'در انتظار'}</span></td><td class="actions">${a.status==='pending'?`<button class="btn btn-xs btn-success" onclick="updateAd('${a.ad_id}','approved')"><i class="fa-solid fa-check"></i></button><button class="btn btn-xs btn-danger" onclick="updateAd('${a.ad_id}','rejected')"><i class="fa-solid fa-xmark"></i></button>`:'<span class="badge badge-info">انجام شد</span>'}</td></tr>`).join('');
-      } else { tbody.innerHTML = '<tr><td colspan="6">تبلیغی نیست</td></tr>'; }
+        tbody.innerHTML = d.data.ads.map(a => `<tr>
+          <td>${a.title}</td><td>${a.description||'-'}</td>
+          <td><img src="${a.image_url}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;" onerror="this.style.display='none'"></td>
+          <td>${a.link_url?`<button class="btn btn-xs btn-outline" onclick="showContent('${a.link_url}')"><i class="fa-solid fa-link"></i></button>`:'-'}</td>
+          <td>${a.customer_name||'-'}</td>
+          <td>${a.price?Number(a.price).toLocaleString('fa-IR'):`<button class="btn btn-xs btn-outline" onclick="setAdPrice('${a.ad_id}')"><i class="fa-solid fa-plus"></i> تعیین</button>`}</td>
+          <td><span class="badge ${a.status==='approved'?'badge-success':a.status==='rejected'?'badge-danger':'badge-warning'}">${a.status==='approved'?'تایید':a.status==='rejected'?'رد':'در انتظار'}</span></td>
+          <td class="actions">${a.status==='pending'?`<button class="btn btn-xs btn-success" onclick="updateAd('${a.ad_id}','approved')"><i class="fa-solid fa-check"></i></button><button class="btn btn-xs btn-danger" onclick="updateAd('${a.ad_id}','rejected')"><i class="fa-solid fa-xmark"></i></button>`:'<span class="badge badge-info">انجام شد</span>'}</td>
+        </tr>`).join('');
+      } else { tbody.innerHTML = '<tr><td colspan="8">تبلیغی نیست</td></tr>'; }
     }
 
     async function updateAd(id, status) { await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'updateAdStatus', ad_id: id, status }) }); loadAdsAdmin(); }
+    
+    function setAdPrice(id) {
+      const price = prompt('قیمت تبلیغ را به تومان وارد کنید:');
+      if (!price || isNaN(price)) return;
+      fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'setAdPrice', ad_id: id, price: parseInt(price) }) })
+      .then(r => r.json()).then(d => { if (d.result==='success') loadAdsAdmin(); else alert(d.message); });
+    }
 
     // ========== STATS ==========
     async function loadStatsAdmin() {
