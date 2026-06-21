@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>رسانه هنری قمر | رزرو تبلیغات</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --cream: #fdfbf7; --milk: #f5efe6; --gold: #c8af93;
+      --brown: #8b6f4e; --dark: #3e2c1c; --text: #5c4a3a; --white: #fff;
+      --red: #e74c3c; --green: #27ae60;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #fdfbf7, #f5efe6);
+      color: var(--text); min-height: 100vh;
+    }
+    .header {
+      background: var(--white); padding: 14px 20px; display: flex;
+      align-items: center; box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+      justify-content: space-between;
+    }
+    .header-back { color: var(--brown); font-size: 14px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 4px; }
+    .header-logo-small { display: flex; align-items: center; gap: 8px; }
+    .header-logo-small img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+    .header-logo-small span { font-weight: 700; color: var(--dark); font-size: 16px; }
+    .container { max-width: 650px; margin: 0 auto; padding: 24px 20px; }
+    .card { background: var(--white); border-radius: 20px; padding: 28px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 16px; }
+    h2 { color: var(--dark); margin-bottom: 4px; }
+    h2 i { color: var(--red); }
+    .subtitle { color: #a08b73; font-size: 13px; margin-bottom: 20px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .form-group label i { color: var(--red); font-size: 11px; margin-left: 4px; }
+    .form-group input, .form-group textarea { width: 100%; padding: 10px 14px; border: 1.5px solid #e5ddd3; border-radius: 10px; font-size: 13px; background: #fdfaf6; outline: none; font-family: inherit; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(231,76,60,0.1); }
+    .error-message { display: none; color: var(--red); font-size: 12px; padding: 10px 14px; background: #fdf0ee; border-radius: 8px; text-align: center; margin-bottom: 12px; }
+    .success-message { display: none; color: var(--green); font-size: 12px; padding: 10px 14px; background: #eafaf1; border-radius: 8px; text-align: center; margin-bottom: 12px; }
+
+    .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; }
+    .btn-red { background: linear-gradient(145deg, #e74c3c, #c0392b); color: #fff; }
+    .btn-red:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-brown { background: linear-gradient(145deg, var(--brown), #6d553b); color: #fff; }
+
+    .preview-section { margin-top: 16px; }
+    .preview-section h3 { font-size: 15px; color: var(--dark); margin-bottom: 12px; }
+    .preview-card {
+      background: var(--white); border-radius: 12px; overflow: hidden;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.04); border: 2px dashed #e74c3c;
+      max-width: 280px; margin: 0 auto;
+    }
+    .preview-card img { width: 100%; height: 160px; object-fit: cover; }
+    .preview-card .info { padding: 10px 12px; }
+    .preview-card .info .p-name { font-size: 12px; font-weight: 700; color: var(--dark); }
+    .preview-card .info .p-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+    .preview-card .info .p-cat { font-size: 9px; background: #e74c3c; color: #fff; padding: 2px 8px; border-radius: 10px; }
+    .preview-card .info .p-desc { font-size: 10px; color: #e74c3c; }
+
+    @media (max-width: 500px) { .container { padding: 12px 8px; } .card { padding: 20px 16px; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="menu.html" class="header-back"><i class="fa-solid fa-arrow-right"></i> بازگشت</a>
+    <div class="header-logo-small">
+      <img src="https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg" alt="لوگو">
+      <span>رسانه هنری قمر</span>
+    </div>
+    <div style="width:60px;"></div>
+  </header>
+
+  <div class="container">
+
+    <div class="card" id="requestCard">
+      <h2><i class="fa-solid fa-ad"></i> رزرو تبلیغات</h2>
+      <p class="subtitle">اطلاعات تبلیغ خود را وارد کنید تا پس از تأیید و تعیین قیمت، پرداخت کنید</p>
+
+      <form id="adForm">
+        <div class="form-group"><label><i class="fa-solid fa-user"></i> نام شما</label><input type="text" id="adName" placeholder="نام کامل" required></div>
+        <div class="form-group"><label><i class="fa-solid fa-phone"></i> راه ارتباطی (ایتا)</label><input type="text" id="adContact" placeholder="آیدی یا شماره ایتا" required></div>
+        <div class="form-group"><label><i class="fa-solid fa-heading"></i> تیتر تبلیغ</label><input type="text" id="adTitle" placeholder="عنوان تبلیغ" required oninput="updatePreview()"></div>
+        <div class="form-group"><label><i class="fa-solid fa-align-left"></i> توضیح کوتاه</label><input type="text" id="adDesc" placeholder="متن کوتاه تبلیغ" required oninput="updatePreview()"></div>
+        <div class="form-group"><label><i class="fa-solid fa-image"></i> لینک تصویر</label><input type="url" id="adImage" placeholder="https://..." required oninput="updatePreview()"></div>
+        <div class="form-group"><label><i class="fa-solid fa-link"></i> لینک مقصد</label><input type="url" id="adLink" placeholder="https://..." required></div>
+
+        <div class="error-message" id="adError"></div>
+        <div class="success-message" id="adSuccess"></div>
+
+        <button type="submit" class="btn btn-red" id="adBtn"><i class="fa-solid fa-paper-plane"></i> ارسال درخواست تبلیغ</button>
+      </form>
+
+      <div class="preview-section" id="previewSection">
+        <h3><i class="fa-solid fa-eye"></i> پیش‌نمایش تبلیغ</h3>
+        <div class="preview-card">
+          <img src="https://cdn.imgurl.ir/uploads/n606537_IMG_20260618_122029_787.jpg" alt="پیش‌نمایش" id="previewImg">
+          <div class="info">
+            <div class="p-name" id="previewTitle">تیتر تبلیغ</div>
+            <div class="p-meta">
+              <span class="p-cat">تبلیغ</span>
+              <span class="p-desc" id="previewDesc">توضیح کوتاه</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="successCard" style="display:none;text-align:center;">
+      <i class="fa-solid fa-check-circle" style="font-size:56px;color:var(--green);margin-bottom:12px;"></i>
+      <h2>درخواست ثبت شد!</h2>
+      <p style="color:#a08b73;margin:12px 0;">پس از تأیید و تعیین قیمت توسط ادمین، برای پرداخت به همین صفحه مراجعه کنید</p>
+      <div id="adPaySection" style="display:none;margin-top:16px;">
+        <p style="color:var(--green);font-weight:700;">قیمت تعیین شده: <span id="adPriceText"></span> تومان</p>
+        <button class="btn btn-red" onclick="payAd()" style="margin-top:8px;"><i class="fa-solid fa-credit-card"></i> پرداخت و فعال‌سازی تبلیغ</button>
+      </div>
+      <a href="menu.html" class="btn btn-brown" style="margin-top:8px;"><i class="fa-solid fa-arrow-right"></i> بازگشت به منو</a>
+    </div>
+
+  </div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxvhwBmK0KwLGm1yNPisuRbcWRSlN-vuIwteQjWb9SS0MNOBY10GPHf0J8qQ_Nw0l9bSw/exec';
+
+    function updatePreview() {
+      document.getElementById('previewTitle').textContent = document.getElementById('adTitle').value || 'تیتر تبلیغ';
+      document.getElementById('previewDesc').textContent = document.getElementById('adDesc').value || 'توضیح کوتاه';
+      const imgUrl = document.getElementById('adImage').value;
+      if (imgUrl) { document.getElementById('previewImg').src = imgUrl; }
+    }
+
+    document.getElementById('adForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('adBtn'), err = document.getElementById('adError'), ok = document.getElementById('adSuccess');
+      err.style.display = 'none'; ok.style.display = 'none';
+      btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> در حال ارسال...';
+
+      try {
+        const res = await fetch(API_URL, { method:'POST', body: JSON.stringify({
+          action:'addAd', customer_name: document.getElementById('adName').value, contact: document.getElementById('adContact').value,
+          title: document.getElementById('adTitle').value, description: document.getElementById('adDesc').value,
+          image_url: document.getElementById('adImage').value, link_url: document.getElementById('adLink').value
+        })});
+        const d = await res.json();
+        if (d.result==='success') {
+          document.getElementById('requestCard').style.display = 'none';
+          document.getElementById('successCard').style.display = 'block';
+          localStorage.setItem('qm_ad_id', d.data.ad_id);
+        } else { err.textContent = d.message || 'خطا'; err.style.display = 'block'; }
+      } catch(e) { err.textContent = 'خطا در ارتباط'; err.style.display = 'block'; }
+      finally { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> ارسال درخواست تبلیغ'; }
+    });
+
+    async function checkAdStatus() {
+      const adId = localStorage.getItem('qm_ad_id');
+      if (!adId) return;
+      try {
+        const res = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'getAds' }) });
+        const d = await res.json();
+        if (d.result==='success') {
+          const ad = d.data.ads.find(a => a.ad_id === adId);
+          if (ad && ad.price) {
+            document.getElementById('adPaySection').style.display = 'block';
+            document.getElementById('adPriceText').textContent = Number(ad.price).toLocaleString('fa-IR');
+          }
+        }
+      } catch(e) {}
+    }
+
+    function payAd() {
+      const adId = localStorage.getItem('qm_ad_id');
+      const price = parseInt(document.getElementById('adPriceText').textContent.replace(/,/g, ''));
+      localStorage.setItem('qm_pay_ad_id', adId);
+      localStorage.setItem('qm_pay_ad_price', price);
+      window.location.href = 'pay.html';
+    }
+
+    checkAdStatus();
+    updatePreview();
+  </script>
+</body>
+</html>
